@@ -2,7 +2,7 @@
 from Tkinter import *
 import random
 import time
-
+#Creating Windows
 window = Tk()
 window.title("Traffic Lights")
 canvas = Canvas(window, width=600, height=400, bg='white')
@@ -10,6 +10,7 @@ canvas.pack(padx=10,pady=10)
 
 #TrafficLights
 class TrafficLights:
+    #Initiliasing class
     def __init__(self):
         red = canvas.create_oval(35, 35, 50, 50, fill = "white",width=2)
         green = canvas.create_oval(35,60,50,75, fill = "white",width=2)
@@ -37,7 +38,7 @@ class TrafficLights:
             canvas.update()
             time.sleep(0.05)
 
-            
+#Instances of the Class running            
 test=TrafficLights()
 b = random.randint(20,30)
 test.redoff()
