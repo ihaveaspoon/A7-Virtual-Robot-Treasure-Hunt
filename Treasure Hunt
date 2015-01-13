@@ -1,0 +1,60 @@
+#Level One - Treasure Hunt
+#A7
+
+#Import Modules/Libraries
+import pygame
+from time import sleep
+
+#Initialise Pygame/canvas
+pygame.init()
+pygame.display.set_caption('Treasure Hunt - Level One')
+screen = pygame.display.set_mode([640,550])
+white = (255,255,255)
+
+#Import background
+bg = pygame.image.load("kart.jpg").convert()
+background_position = [0,0]
+
+class Car:
+    global screen
+    def __init__(self, x, y):
+        self.car_img = "player_car.png"
+        self.x = x
+        self.y = y
+
+    def create(self):
+        self.car_load = pygame.image.load(self.car_img)
+        self.car      = self.car_load.get_rect()
+        self.car.x = self.x
+        self.car.y = self.y
+
+    def car_update(self):
+        screen.blit(self.car_load, self.car)
+        
+    def move(self, x, y):
+        self.car = self.car.move(x, y)
+        sleep(1)
+        
+
+#Screen Update
+screen.blit(bg, background_position)
+def update():
+    #screen.blit(pygame.image.load(self.car_img), car.cL)
+    screen.blit(bg, background_position)
+    car.car_update()
+    pygame.display.flip()
+
+
+car = Car(50,50)
+
+car.create()
+update()
+
+for i in range(10):
+    car.move(-10, 0)
+    update()
+    car.move(0, -10)
+    update()
+
+ 
+pygame.display.flip()
