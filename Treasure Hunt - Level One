@@ -1,33 +1,40 @@
-#http://i57.tinypic.com/j6qupy.gif
+#Level One - Treasure Hunt
+#A7
+
+#Import Modules/Libraries
 import pygame
+from time import sleep
+
+#Initialise Pygame/canvas
 pygame.init()
+pygame.display.set_caption('Treasure Hunt - Level One')
+screen = pygame.display.set_mode([640,550])
 
-pygame.display.set_caption('Treasure Hunt')
-screen = pygame.display.set_mode([640,480])
-
+#Import background
 bg = pygame.image.load("kart.jpg").convert()
 background_position = [0,0]
-screen.blit(bg, [0,0])
+
 player_image = pygame.image.load("player_car.png")
+player_rect  = player_image.get_rect()
+
 done = False
- 
+player_rect.move(50,50)
+
+#Screen Update
+def update():
+    screen.blit(bg, background_position)
+    screen.blit(player_image, player_rect)
+    pygame.display.flip()
+
 while not done:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             done = True
-             
-    # Copy image to screen:
-    screen.blit(bg, background_position)
- 
-    # Get the current mouse position. This returns the position
-    # as a list of two numbers.
-    player_position = pygame.mouse.get_pos()
-    x = player_position[0]
-    y = player_position[1]
-     
-    # Copy image to screen:
-    screen.blit(player_image, [x, y])
-     
-    pygame.display.flip()
+
+    for i in range(10):
+        player_rect = player_rect.move(10,10)
+        sleep(1)
+        update()
  
 pygame.display.flip()
+
