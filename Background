@@ -1,4 +1,4 @@
-http://i57.tinypic.com/j6qupy.gif
+#http://i57.tinypic.com/j6qupy.gif
 import pygame
 pygame.init()
 
