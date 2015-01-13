@@ -15,6 +15,7 @@ white = (255,255,255)
 bg = pygame.image.load("kart.jpg").convert()
 background_position = [0,0]
 
+#Creating class for Car
 class Car:
     global screen
     def __init__(self, x, y):
@@ -33,28 +34,68 @@ class Car:
         
     def move(self, x, y):
         self.car = self.car.move(x, y)
-        sleep(1)
+        sleep(0.05)
         
 
 #Screen Update
 screen.blit(bg, background_position)
+
 def update():
     #screen.blit(pygame.image.load(self.car_img), car.cL)
     screen.blit(bg, background_position)
     car.car_update()
     pygame.display.flip()
 
-
-car = Car(50,50)
-
+#Creating Instance of Car
+car = Car(250,380)
 car.create()
 update()
 
-for i in range(10):
+#Movement
+for i in range(23):
     car.move(-10, 0)
     update()
+for i in range(37):
     car.move(0, -10)
     update()
-
- 
+for i in range(19):
+    car.move(10,0)
+    update()
+for i in range(12):
+    car.move(0,10)
+    update()
+for i in range(10):
+    car.move(10,0)
+    update()
+for i in range(12):
+    car.move(0,-10)
+    update()
+for i in range(24):
+    car.move(10,0)
+    update()
+for i in range(8):
+    car.move(0,10)
+    update()
+for i in range(13):
+    car.move(-10,0)
+    update()
+for i in range(12):
+    car.move(0,10)
+    update()
+for i in range(29):
+    car.move(-10,0)
+    update()
+for i in range(10):
+    car.move(0,10)
+    update()
+for i in range(42):
+    car.move(10,0)
+    update()
+for i in range(10):
+    car.move(0,10)
+    update()
+for i in range(43):
+    car.move(-10,0)
+    update()
+    
 pygame.display.flip()
