@@ -9,6 +9,8 @@ from time import sleep
 pygame.init()
 pygame.display.set_caption('Treasure Hunt - Level One')
 screen = pygame.display.set_mode([640,550])
+white = (255,255,255)
+screen.fill(white)                      #make it in to white screen
 
 #Import background
 bg = pygame.image.load("kart.jpg").convert()
