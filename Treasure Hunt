@@ -85,13 +85,12 @@ def updateb():
 car = Car(250,380)
 car.create()
 update()
+#test
 
 #Movement
 for i in range(23):
     car.move(-10, 0)
     update()
-car.rotation(-90)
-
 for i in range(37):
     car.move(0, -10)
     updatet()
@@ -103,31 +102,31 @@ car.rotation(90)
 for i in range(10):
     car.move(0,10)
     updateb()
-car.rotation(90)
+
 for i in range(10):
     car.move(10,0)
     updater()
-car.rotation(90)
+
 for i in range(10):
     car.move(0,-10)
     updatet()
-car.rotation(-90)
+
 for i in range(24):
     car.move(10,0)
     updater()
-car.rotation(90)
+
 for i in range(8):
     car.move(0,10)
     updateb()
-car.rotation(0)
+
 for i in range(13):
     car.move(-10,0)
     update()
-car.rotation(90)
+
 for i in range(12):
     car.move(0,10)
     updateb()
-car.rotation(0)
+
 for i in range(29):
     car.move(-10,0)
     update()
@@ -140,8 +139,8 @@ for i in range(42):
 for i in range(10):
     car.move(0,10)
     updateb()
-for i in range(43):
+for i in range(38):
     car.move(-10,0)
     update()
-    
 pygame.display.flip()
+quit()
