@@ -162,4 +162,4 @@ for i in range(38):
     car.move(-10,0)
     update()
 pygame.display.flip()
-quit()
+pygame.display.quit()
