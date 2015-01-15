@@ -58,15 +58,27 @@ class Car:
         screen.blit(self.rotate90,self.car)
         pygame.display.flip()
        
-    
-#Screen Update
-screen.blit(bg, background_position)
+class Landmark: #Creating class for Car
+    global screen
+    def __init__(self, x, y):
+        self.landmark_img = "traffic_cone.png"
+        self.x = x
+        self.y = y
 
+    def create(self):
+        self.landmark_load = pygame.image.load(self.landmark_img)
+        self.landmark      = self.landmark_load.get_rect()
+        self.landmark.x = self.x
+        self.landmark.y = self.y
+
+    def landmark_update(self):
+        screen.blit(self.landmark_load, self.landmark)
 
 def update():
-    #screen.blit(pygame.image.load(self.car_img), car.cL)
     screen.blit(bg, background_position)
     car.car_update()
+    l1.landmark_update()
+    l2.landmark_update()
     pygame.display.flip()
 def updatet():
     screen.blit(bg, background_position)
@@ -81,9 +93,16 @@ def updateb():
     car.car_updateb()
     pygame.display.flip()
 
+#Screen Update
+screen.blit(bg, background_position)
+
 #Creating Instance of Car
 car = Car(250,380)
 car.create()
+l1 = Landmark(100,90)
+l1.create()
+l2 = Landmark(290,85)
+l2.create()
 update()
 #test
 
