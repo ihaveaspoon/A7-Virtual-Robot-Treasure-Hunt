@@ -58,7 +58,7 @@ class Car:
         screen.blit(self.rotate90,self.car)
         pygame.display.flip()
        
-class Landmark: #Creating class for Car
+class Landmark: #Creating class for Landmarks
     global screen
     def __init__(self, x, y):
         self.landmark_img = "traffic_cone.png"
@@ -77,8 +77,6 @@ class Landmark: #Creating class for Car
 def update():
     screen.blit(bg, background_position)
     car.car_update()
-    l1.landmark_update()
-    l2.landmark_update()
     pygame.display.flip()
 def updatet():
     screen.blit(bg, background_position)
@@ -107,59 +105,104 @@ update()
 #test
 
 #Movement
-for i in range(23):
-    car.move(-10, 0)
-    update()
-for i in range(37):
-    car.move(0, -10)
-    updatet()
-car.rotation(-180)
-for i in range(19):
-    car.move(10,0)
-    updater()
-car.rotation(90)
-for i in range(10):
-    car.move(0,10)
-    updateb()
+true=1
+while true:
+    for i in range(23):
+        car.move(-10, 0)
+        update()
+        l1.landmark_update()
+        l2.landmark_update()
+        pygame.display.flip()
+    for i in range(37):
+        car.move(0, -10)
+        updatet()
+        l1.landmark_update()
+        l2.landmark_update()
+        pygame.display.flip()
+    for i in range(19):
+        car.move(10,0)
+        updater()
+        l1.landmark_update()
+        l2.landmark_update()
+        pygame.display.flip()
+    for i in range(10):
+        car.move(0,10)
+        updateb()
+        l1.landmark_update()
+        l2.landmark_update()
+        pygame.display.flip()
+    for i in range(10):
+        car.move(10,0)
+        updater()
+        l1.landmark_update()
+        l2.landmark_update()
+        pygame.display.flip()
 
-for i in range(10):
-    car.move(10,0)
-    updater()
+    for i in range(10):
+        car.move(0,-10)
+        updatet()
+        l1.landmark_update()
+        l2.landmark_update()
+        pygame.display.flip()
 
-for i in range(10):
-    car.move(0,-10)
-    updatet()
+    for i in range(24):
+        car.move(10,0)
+        updater()
+        l1.landmark_update()
+        l2.landmark_update()
+        pygame.display.flip()
 
-for i in range(24):
-    car.move(10,0)
-    updater()
+    for i in range(8):
+        car.move(0,10)
+        updateb()
+        l1.landmark_update()
+        l2.landmark_update()
+        pygame.display.flip()
 
-for i in range(8):
-    car.move(0,10)
-    updateb()
+    for i in range(13):
+        car.move(-10,0)
+        update()
+        l1.landmark_update()
+        l2.landmark_update()
+        pygame.display.flip()
 
-for i in range(13):
-    car.move(-10,0)
-    update()
+    for i in range(12):
+        car.move(0,10)
+        updateb()
+        l1.landmark_update()
+        l2.landmark_update()
+        pygame.display.flip()
 
-for i in range(12):
-    car.move(0,10)
-    updateb()
-
-for i in range(29):
-    car.move(-10,0)
-    update()
-for i in range(10):
-    car.move(0,10)
-    updateb()
-for i in range(42):
-    car.move(10,0)
-    updater()
-for i in range(10):
-    car.move(0,10)
-    updateb()
-for i in range(38):
-    car.move(-10,0)
-    update()
+    for i in range(29):
+        car.move(-10,0)
+        update()
+        l1.landmark_update()
+        l2.landmark_update()
+        pygame.display.flip()
+    for i in range(10):
+        car.move(0,10)
+        updateb()
+        l1.landmark_update()
+        l2.landmark_update()
+        pygame.display.flip()
+    for i in range(42):
+        car.move(10,0)
+        updater()
+        l1.landmark_update()
+        l2.landmark_update()
+        pygame.display.flip()
+    for i in range(10):
+        car.move(0,10)
+        updateb()
+        l1.landmark_update()
+        l2.landmark_update()
+        pygame.display.flip()
+    for i in range(38):
+        car.move(-10,0)
+        update()
+        l1.landmark_update()
+        l2.landmark_update()
+        pygame.display.flip()
+    true=0
 pygame.display.flip()
 pygame.display.quit()
