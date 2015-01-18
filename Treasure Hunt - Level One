@@ -3,20 +3,43 @@
 
 #Import Modules/Libraries
 import pygame
-import time
 from time import sleep
 from pygame.transform import rotate
+from time import time
+from math import floor
+
+
+
 
 #Initialise Pygame/canvas
 pygame.init()
 pygame.display.set_caption('Treasure Hunt - Level One')
 screen = pygame.display.set_mode([640,580])
 white = (255,255,255)
-screen.fill(white)                      #Turn the screen white
+screen.fill(white)                      #make it in to white screen
+
+
+#Creating colours
+white = (255,255,255)
+blue = (176,224,230)
+dblue = (0,129,242)
+
+# Set fonts 
+font = pygame.font.SysFont("monospace", 40) # Time font
+bfont = pygame.font.SysFont("monospace", 30) # Button font
+
+# Buttons
+start = 150,480,200,200
+stop = 150,550,150,50
 
 #Import background
 bg = pygame.image.load("kart.jpg").convert()
 background_position = [0,0]
+
+# Start and stop buttons
+pygame.draw.rect(screen,blue,start)
+screen.blit(bfont.render("Checkpoint", 1, dblue),[160,500])
+pygame.draw.rect(screen,blue,stop)
 
 #Creating class for Car
 class Car:
@@ -38,6 +61,7 @@ class Car:
         self.car.x = self.x
         self.car.y = self.y
         
+        
     def car_update(self):
         screen.blit(self.car_load, self.car)
     def car_updatet(self):
@@ -51,6 +75,9 @@ class Car:
         sleep(0.05)
     def rotation(self,A):
         self.angle=A
+        #self.tx=tx
+        #self.ty=ty
+        #self.c=(self.tx,ty)
         self.rotate90 = pygame.transform.rotate(self.car_load,self.angle)
         screen.blit(self.rotate90,self.car)
         pygame.display.flip()
@@ -120,6 +147,7 @@ class Green:
         screen.blit(self.green_load,self.green)
         green.create()"""
 
+
 def update():
     screen.blit(bg, background_position)
     car.car_update()
@@ -127,7 +155,6 @@ def update():
 def updatet():
     screen.blit(bg, background_position)
     car.car_updatet()
-    
     pygame.display.flip()
 def updater():
     screen.blit(bg, background_position)
@@ -137,24 +164,74 @@ def updateb():
     screen.blit(bg, background_position)
     car.car_updateb()
     pygame.display.flip()
+    
+#Creating timer class  
+class Timer(object):
+	"""Timer object"""
 
-#code update
-x=0
-def movement(x):
-    for i in range(x):
-        car.move(-10, 0)
-        update()
-        l1.landmark_update()
-        l2.landmark_update()
-        l3.landmark_update()
-        l4.landmark_update()
-        pygame.display.flip()    
+	def __init__(self):
+		# Initialize of timer
+
+		self.currentTime = 0
+		self.startTime = 0
+		self.offset = 0
+		self.running = False
+
+	def start(self):
+		# Starts the timer
+
+		if not self.running:
+			self.startTime = time()
+		self.running = True
+
+	def stop(self):
+		# Stops the timer
+
+		self.offset = (time() - self.startTime) + self.offset
+		self.running = False
+
+	def count(self):
+		# Gets the timers current time
+
+		if self.running:
+			self.currentTime = (time() - self.startTime) + self.offset
+
+	def update(self, screen, font):
+		# Updates timer with current time
+
+		dms = self.currentTime*1000 # Get current time
+
+		# Do all the math
+		dmin = floor(((dms%86400000)%3600000)/60000)
+		dsec = floor((((dms%86400000)%3600000)%60000)/1000)
+		dten = floor(((((dms%86400000)%3600000)%60000)%1000)/10)
+
+
+		pygame.draw.rect(screen, (0,206,209), (350,480,500,300)) # Color background section
+
+		# Blit onto screen
+
+		screen.blit(font.render(str("%.2f"%(dmin/100)).split(".")[1], 1, white),[350,500])
+		screen.blit(font.render(":", 1, blue),[425,500])
+		screen.blit(font.render(str("%.2f"%(dsec/100)).split(".")[1], 1, white),[460,500])
+		screen.blit(font.render(":", 1, blue),[535,500])
+		screen.blit(font.render(str("%.2f"%(dten/100)).split(".")[1], 1, white),[570,500])
+		
+mainTimer = Timer()# Create new timer object
+
+mainTimer.update(screen, font) # Initially update the screen
+
 #Screen Update
 screen.blit(bg, background_position)
 
 #Creating Instance of Car
 car = Car(250,380)
 car.create()
+l1 = Landmark(100,90)
+l1.create()
+l2 = Landmark(290,85)
+l2.create()
+update()
 
 #Landmarks
 l1 = Landmark(130,120)
@@ -175,20 +252,24 @@ red=Red(45,490)
 red.create()
 update()
 
-#Movement
-true=1
+#test
+running = True
+timerOn = 0 # Start timer flag
+#Movement and timing
+true = 1
 while true:
     green.green_update()
-    movement(23)
-    #code updated to call a function for movement and shorten the lines used
-    """for i in range(23):
+    for i in range(23):
         car.move(-10, 0)
         update()
         l1.landmark_update()
         l2.landmark_update()
         l3.landmark_update()
         l4.landmark_update()
-        pygame.display.flip()"""
+        pygame.display.flip()
+        mainTimer.start()
+        mainTimer.count() # Get current time
+        mainTimer.update(screen, font) # Apply new current time
     for i in range(37):
         car.move(0, -10)
         updatet()
@@ -197,6 +278,9 @@ while true:
         l3.landmark_update()
         l4.landmark_update()
         pygame.display.flip()
+        mainTimer.start()
+        mainTimer.count() # Get current time
+        mainTimer.update(screen, font) # Apply new current time
     for i in range(19):
         car.move(10,0)
         updater()
@@ -204,12 +288,10 @@ while true:
         l2.landmark_update()
         l3.landmark_update()
         l4.landmark_update()
+        mainTimer.start()
+        mainTimer.count() # Get current time
+        mainTimer.update(screen, font) # Apply new current time
         pygame.display.flip()
-    red.red_update()
-    pygame.display.flip()
-    time.sleep(5)
-    green.green_update()
-    pygame.display.flip()
     for i in range(10):
         car.move(0,10)
         updateb()
@@ -217,16 +299,21 @@ while true:
         l2.landmark_update()
         l3.landmark_update()
         l4.landmark_update()
+        mainTimer.start()
+        mainTimer.count() # Get current time
+        mainTimer.update(screen, font) # Apply new current time
         pygame.display.flip()
     for i in range(10):
         car.move(10,0)
         updater()
         l1.landmark_update()
-        l2.landmark_update()
+        l2.landmark_update
         l3.landmark_update()
         l4.landmark_update()
+        mainTimer.start()
+        mainTimer.count() # Get current time
+        mainTimer.update(screen, font) # Apply new current time
         pygame.display.flip()
-
     for i in range(10):
         car.move(0,-10)
         updatet()
@@ -234,8 +321,10 @@ while true:
         l2.landmark_update()
         l3.landmark_update()
         l4.landmark_update()
+        mainTimer.start()
+        mainTimer.count() # Get current time
+        mainTimer.update(screen, font) # Apply new current time
         pygame.display.flip()
-
     for i in range(24):
         car.move(10,0)
         updater()
@@ -243,8 +332,11 @@ while true:
         l2.landmark_update()
         l3.landmark_update()
         l4.landmark_update()
+        screen.blit(bfont.render("A", 1, dblue),[240,550])
+        mainTimer.start()
+        mainTimer.count() # Get current time
+        mainTimer.update(screen, font) # Apply new current time
         pygame.display.flip()
-
     for i in range(8):
         car.move(0,10)
         updateb()
@@ -252,8 +344,10 @@ while true:
         l2.landmark_update()
         l3.landmark_update()
         l4.landmark_update()
+        mainTimer.start()
+        mainTimer.count() # Get current time
+        mainTimer.update(screen, font) # Apply new current time
         pygame.display.flip()
-
     for i in range(13):
         car.move(-10,0)
         update()
@@ -261,8 +355,10 @@ while true:
         l2.landmark_update()
         l3.landmark_update()
         l4.landmark_update()
+        mainTimer.start()
+        mainTimer.count() # Get current time
+        mainTimer.update(screen, font) # Apply new current time
         pygame.display.flip()
-
     for i in range(12):
         car.move(0,10)
         updateb()
@@ -270,8 +366,10 @@ while true:
         l2.landmark_update()
         l3.landmark_update()
         l4.landmark_update()
+        mainTimer.start()
+        mainTimer.count() # Get current time
+        mainTimer.update(screen, font) # Apply new current time
         pygame.display.flip()
-
     for i in range(29):
         car.move(-10,0)
         update()
@@ -279,6 +377,9 @@ while true:
         l2.landmark_update()
         l3.landmark_update()
         l4.landmark_update()
+        mainTimer.start()
+        mainTimer.count() # Get current time
+        mainTimer.update(screen, font) # Apply new current time        
         pygame.display.flip()
     for i in range(10):
         car.move(0,10)
@@ -287,8 +388,10 @@ while true:
         l2.landmark_update()
         l3.landmark_update()
         l4.landmark_update()
+        mainTimer.start()
+        mainTimer.count() # Get current time
+        mainTimer.update(screen, font) # Apply new current time        
         pygame.display.flip()
-        
     for i in range(42):
         car.move(10,0)
         updater()
@@ -296,8 +399,10 @@ while true:
         l2.landmark_update()
         l3.landmark_update()
         l4.landmark_update()
-        pygame.display.flip()
-        
+        mainTimer.start()
+        mainTimer.count() # Get current time
+        mainTimer.update(screen, font) # Apply new current time        
+        pygame.display.flip()  
     for i in range(10):
         car.move(0,10)
         updateb()
@@ -305,8 +410,10 @@ while true:
         l2.landmark_update()
         l3.landmark_update()
         l4.landmark_update()
+        mainTimer.start()
+        mainTimer.count() # Get current time
+        mainTimer.update(screen, font) # Apply new current time        
         pygame.display.flip()
-        
     for i in range(38):
         car.move(-10,0)
         update()
@@ -314,9 +421,13 @@ while true:
         l2.landmark_update()
         l3.landmark_update()
         l4.landmark_update()
+        mainTimer.start()
+        mainTimer.count() # Get current time
+        mainTimer.update(screen, font) # Apply new current time        
         pygame.display.flip()
-    true=0
-    
+        true = 0
 pygame.display.flip()
-pygame.display.quit()
+
+quit()
+
 
