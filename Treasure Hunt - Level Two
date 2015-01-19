@@ -430,5 +430,4 @@ while true:
         pygame.display.flip()
         true = 0
 pygame.display.flip()
-
-quit()
+pygame.display.quit()
