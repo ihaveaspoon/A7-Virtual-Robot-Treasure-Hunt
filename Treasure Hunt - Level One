@@ -3,6 +3,7 @@
 
 #Import Modules/Libraries
 import pygame
+import time
 from time import sleep
 from pygame.transform import rotate
 from time import time
@@ -126,6 +127,8 @@ class Yellow:
         self.yellow=self.yellow_load.get_rect()
         self.yellow.x=self.x
         self.yellow.y=self.y
+    def yellow_update(self):
+        screen.blit(self.yellow_load,self.yellow)
 
 class Green:
     global screen
@@ -227,16 +230,12 @@ screen.blit(bg, background_position)
 #Creating Instance of Car
 car = Car(250,380)
 car.create()
-l1 = Landmark(100,90)
-l1.create()
-l2 = Landmark(290,85)
-l2.create()
 update()
 
 #Landmarks
-l1 = Landmark(130,120)
+l1 = Landmark(230,35)
 l1.create()
-l2 = Landmark(310,70)
+l2 = Landmark(320,120)
 l2.create()
 l3 = Landmark(400,200)
 l3.create()
@@ -282,6 +281,12 @@ while true:
         mainTimer.count() # Get current time
         mainTimer.update(screen, font) # Apply new current time
     for i in range(19):
+        if i==17:
+            red.red_update()
+        if i==18:
+            #red.red_update()
+            pygame.time.delay(1000)
+            green.green_update()
         car.move(10,0)
         updater()
         l1.landmark_update()
@@ -295,7 +300,7 @@ while true:
     for i in range(10):
         car.move(0,10)
         updateb()
-        l1.landmark_update()
+        #l1.landmark_update()
         l2.landmark_update()
         l3.landmark_update()
         l4.landmark_update()
@@ -306,7 +311,7 @@ while true:
     for i in range(10):
         car.move(10,0)
         updater()
-        l1.landmark_update()
+        #l1.landmark_update()
         l2.landmark_update
         l3.landmark_update()
         l4.landmark_update()
@@ -317,7 +322,7 @@ while true:
     for i in range(10):
         car.move(0,-10)
         updatet()
-        l1.landmark_update()
+        #l1.landmark_update()
         l2.landmark_update()
         l3.landmark_update()
         l4.landmark_update()
@@ -328,7 +333,7 @@ while true:
     for i in range(24):
         car.move(10,0)
         updater()
-        l1.landmark_update()
+        #l1.landmark_update()
         l2.landmark_update()
         l3.landmark_update()
         l4.landmark_update()
@@ -340,7 +345,7 @@ while true:
     for i in range(8):
         car.move(0,10)
         updateb()
-        l1.landmark_update()
+        #l1.landmark_update()
         l2.landmark_update()
         l3.landmark_update()
         l4.landmark_update()
@@ -427,7 +432,4 @@ while true:
         pygame.display.flip()
         true = 0
 pygame.display.flip()
-
-quit()
-
-
+pygame.display.quit()
