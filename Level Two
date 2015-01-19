@@ -8,9 +8,6 @@ from pygame.transform import rotate
 from time import time
 from math import floor
 
-
-
-
 #Initialise Pygame/canvas
 pygame.init()
 pygame.display.set_caption('Treasure Hunt - Level Two')
@@ -78,9 +75,6 @@ class Car:
         sleep(0.05)
     def rotation(self,A):
         self.angle=A
-        #self.tx=tx
-        #self.ty=ty
-        #self.c=(self.tx,ty)
         self.rotate90 = pygame.transform.rotate(self.car_load,self.angle)
         screen.blit(self.rotate90,self.car)
         pygame.display.flip()
@@ -100,9 +94,6 @@ class Coin:
 
     def coin_update(self):
         screen.blit(self.coin_load, self.coin)
-
-
-
        
 class Landmark: #Creating class for Landmarks
     global screen
@@ -180,9 +171,6 @@ def updateb():
     screen.blit(bg, background_position)
     car.car_updateb()
     pygame.display.flip()
-
-
-    
     
 #Creating timer class  
 class Timer(object):
@@ -239,7 +227,6 @@ class Timer(object):
 mainTimer = Timer()# Create new timer object
 
 mainTimer.update(screen, font) # Initially update the screen
-
 
 #Screen Update
 screen.blit(bg, background_position)
@@ -357,7 +344,6 @@ while true:
         car.move(10,0)
         updater()
         l1.landmark_update()
-        l2.landmark_update()
         l3.landmark_update()
         l4.landmark_update()
         screen.blit(bfont.render("A", 1, dblue),[240,550])
@@ -370,7 +356,6 @@ while true:
         car.move(0,10)
         updateb()
         l1.landmark_update()
-        l2.landmark_update()
         l3.landmark_update()
         l4.landmark_update()
         mainTimer.start()
@@ -381,7 +366,6 @@ while true:
         car.move(-10,0)
         update()
         l1.landmark_update()
-        l2.landmark_update()
         l3.landmark_update()
         l4.landmark_update()
         mainTimer.start()
@@ -392,7 +376,6 @@ while true:
         car.move(0,10)
         updateb()
         l1.landmark_update()
-        l2.landmark_update()
         l3.landmark_update()
         l4.landmark_update()
         c2.coin_update()
@@ -404,8 +387,6 @@ while true:
         car.move(-10,0)
         update()
         l1.landmark_update()
-        l2.landmark_update()
-        l3.landmark_update()
         l4.landmark_update()
         mainTimer.start()
         mainTimer.count() # Get current time
@@ -415,8 +396,6 @@ while true:
         car.move(0,10)
         updateb()
         l1.landmark_update()
-        l2.landmark_update()
-        l3.landmark_update()
         l4.landmark_update()
         mainTimer.start()
         mainTimer.count() # Get current time
@@ -426,8 +405,6 @@ while true:
         car.move(10,0)
         updater()
         l1.landmark_update()
-        l2.landmark_update()
-        l3.landmark_update()
         l4.landmark_update()
         mainTimer.start()
         mainTimer.count() # Get current time
@@ -437,8 +414,6 @@ while true:
         car.move(0,10)
         updateb()
         l1.landmark_update()
-        l2.landmark_update()
-        l3.landmark_update()
         l4.landmark_update()
         mainTimer.start()
         mainTimer.count() # Get current time
@@ -448,9 +423,6 @@ while true:
         car.move(-10,0)
         update()
         l1.landmark_update()
-        l2.landmark_update()
-        l3.landmark_update()
-        l4.landmark_update()
         c3.coin_update()
         mainTimer.start()
         mainTimer.count() # Get current time
