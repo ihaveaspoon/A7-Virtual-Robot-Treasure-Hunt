@@ -43,6 +43,7 @@ pygame.draw.rect(screen,blue,start)
 screen.blit(bfont.render("Treasure status:", 1, dblue),[160,500])
 pygame.draw.rect(screen,blue,stop)
 
+#Create a Start screen
 class start_button:
 
     def __intit__(self,x,y):
