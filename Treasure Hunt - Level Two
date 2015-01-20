@@ -38,11 +38,13 @@ background_position = [0,0]
 
 # Start and stop buttons
 pygame.draw.rect(screen,blue,start)
-screen.blit(bfont.render("Checkpoint", 1, dblue),[160,500])
+screen.blit(bfont.render("Treasure:", 1, dblue),[160,500])
 screen.blit(cfont.render("Score:", 1, dblue),[20,520])
 pygame.draw.rect(screen,blue,stop)
 
-#class start_button:
+#Start Screen
+#Create a start SCreen
+class start_button:
 
     def __intit__(self,x,y):
         self.button= pg.key.get_pressed()
@@ -52,19 +54,15 @@ pygame.draw.rect(screen,blue,stop)
         self.font=font
         self.surface=surface
 
-
     def loop(self):
         while True:
-            for event in pygame.event.get():
-                if event.type == pygame.QUIT:
-                    self.quit=pygame.quit()
-                    self.sys=sys.exit()
-                    
-                elif event.type == pygame.KEYDOWN:
-                    if event.key == K_ESCAPE:           # pressing escape quit
-                        self.quit=pygame.quit()
-                        self.sys=sys.exit()
-                    return
+                for event in pygame.event.get():
+                        if event.type == pygame.QUIT:
+                               terminate()
+                        elif event.type == pygame.KEYDOWN:
+                                if event.key == K_ESCAPE:# pressing escape quit
+                                    terminate()
+                                return
                             
     def drawText(self,text, font, surface, x, y,TEXTCOLOR):
             self.x=x
@@ -75,8 +73,7 @@ pygame.draw.rect(screen,blue,stop)
             self.textrect.topleft = (self.x,self.y)
             surface.blit(self.textobj, self.textrect)
 
-#Creating class for Car
-class Car: 
+class Car: #Creating class for Car
     global screen
     def __init__(self, x, y):
         self.car_img = "player_car.png"
@@ -174,6 +171,11 @@ class Yellow:
         self.yellow=self.yellow_load.get_rect()
         self.yellow.x=self.x
         self.yellow.y=self.y
+        
+    def yellow_update(self):
+        screen.blit(self.yellow_load,self.yellow)
+
+
 
 class Green:
     global screen
@@ -209,11 +211,9 @@ def updateb():
     
 #Creating timer class  
 class Timer(object):
-	"""Timer object"""
 
 	def __init__(self):
 		# Initialize of timer
-
 		self.currentTime = 0
 		self.startTime = 0
 		self.offset = 0
@@ -221,26 +221,22 @@ class Timer(object):
 
 	def start(self):
 		# Starts the timer
-
 		if not self.running:
 			self.startTime = time()
 		self.running = True
 
 	def stop(self):
 		# Stops the timer
-
 		self.offset = (time() - self.startTime) + self.offset
 		self.running = False
 
 	def count(self):
 		# Gets the timers current time
-
 		if self.running:
 			self.currentTime = (time() - self.startTime) + self.offset
 
 	def update(self, screen, font):
 		# Updates timer with current time
-
 		dms = self.currentTime*1000 # Get current time
 
 		# Do all the math
@@ -311,6 +307,11 @@ TW.loop()
 #test
 running = True
 timerOn = 0 # Start timer flag
+def rangeupdater():
+    mainTimer.start()
+    mainTimer.count()
+    pygame.display.flip()
+    mainTimer.update(screen, font)
 #Movement and timing
 true = 1
 while true:
@@ -322,10 +323,7 @@ while true:
         l2.landmark_update()
         l3.landmark_update()
         l4.landmark_update()
-        pygame.display.flip()
-        mainTimer.start()
-        mainTimer.count() # Get current time
-        mainTimer.update(screen, font) # Apply new current time
+        rangeupdater()
     for i in range(37):
         car.move(0, -10)
         updatet()
@@ -334,130 +332,124 @@ while true:
         l3.landmark_update()
         l4.landmark_update()
         pygame.display.flip()
-        mainTimer.start()
-        mainTimer.count() # Get current time
-        mainTimer.update(screen, font) # Apply new current time
+        rangeupdater()
     for i in range(19):
+        if i==13:
+            yellow.yellow_update()
+        if i==14:
+            pygame.time.delay(3000)
+            green.green_update()
         car.move(10,0)
         updater()
         l1.landmark_update()
         l2.landmark_update()
         l3.landmark_update()
         l4.landmark_update()
-        mainTimer.start()
-        mainTimer.count() # Get current time
-        mainTimer.update(screen, font) # Apply new current time
-        pygame.display.flip()
+        rangeupdater()
     for i in range(10):
+        if i==8:
+            yellow.yellow_update()
+        if i==9:
+            pygame.time.delay(3000)
+            green.green_update()
         car.move(0,10)
         updateb()
+        pygame.draw.rect(screen,blue,start)
+        pygame.draw.rect(screen,blue,stop)
+        screen.blit(bfont.render("Treasure:", 1, dblue),[160,500])
+        screen.blit(bfont.render("A", 1, dblue),[240,530])
         c4.coin_update()
         l2.landmark_update()
         l3.landmark_update()
         l4.landmark_update()
-        mainTimer.start()
-        mainTimer.count() # Get current time
-        mainTimer.update(screen, font) # Apply new current time
-        pygame.display.flip()
+        rangeupdater()
     for i in range(10):
         car.move(10,0)
         updater()
         l2.landmark_update()
         l3.landmark_update()
         l4.landmark_update()
-        mainTimer.start()
-        mainTimer.count() # Get current time
-        mainTimer.update(screen, font) # Apply new current time
-        pygame.display.flip()
+        rangeupdater()
     for i in range(10):
         car.move(0,-10)
         updatet()
         l2.landmark_update()
         l3.landmark_update()
         l4.landmark_update()
-        mainTimer.start()
-        mainTimer.count() # Get current time
-        mainTimer.update(screen, font) # Apply new current time
-        pygame.display.flip()
+        rangeupdater()
     for i in range(24):
         car.move(10,0)
         updater()
         l3.landmark_update()
         l4.landmark_update()
-        screen.blit(bfont.render("A", 1, dblue),[240,550])
+        pygame.draw.rect(screen,blue,start)
+        pygame.draw.rect(screen,blue,stop)
+        screen.blit(bfont.render("Treasure:", 1, dblue),[160,500])
+        screen.blit(bfont.render("B", 1, dblue),[240,530])
         c1.coin_update()
-        mainTimer.start()
-        mainTimer.count() # Get current time
-        mainTimer.update(screen, font) # Apply new current time
-        pygame.display.flip()
+        rangeupdater()
     for i in range(8):
         car.move(0,10)
         updateb()
         l3.landmark_update()
         l4.landmark_update()
-        mainTimer.start()
-        mainTimer.count() # Get current time
-        mainTimer.update(screen, font) # Apply new current time
-        pygame.display.flip()
+        rangeupdater()
     for i in range(13):
         car.move(-10,0)
         update()
         l3.landmark_update()
         l4.landmark_update()
-        mainTimer.start()
-        mainTimer.count() # Get current time
-        mainTimer.update(screen, font) # Apply new current time
-        pygame.display.flip()
+        rangeupdater()
     for i in range(12):
+        if i==10:
+            red.red_update()
+        if i==11:
+            green.green_update()
+            pygame.time.delay(5000)
         car.move(0,10)
         updateb()
         l3.landmark_update()
         l4.landmark_update()
         c2.coin_update()
-        mainTimer.start()
-        mainTimer.count() # Get current time
-        mainTimer.update(screen, font) # Apply new current time
-        pygame.display.flip()
+        rangeupdater()
     for i in range(29):
         car.move(-10,0)
         update()
+        pygame.draw.rect(screen,blue,start)
+        pygame.draw.rect(screen,blue,stop)
+        screen.blit(bfont.render("Treasure:", 1, dblue),[160,500])
+        screen.blit(bfont.render("C", 1, dblue),[240,530])
         l4.landmark_update()
-        mainTimer.start()
-        mainTimer.count() # Get current time
-        mainTimer.update(screen, font) # Apply new current time        
-        pygame.display.flip()
+        rangeupdater()
     for i in range(10):
         car.move(0,10)
         updateb()
         l4.landmark_update()
-        mainTimer.start()
-        mainTimer.count() # Get current time
-        mainTimer.update(screen, font) # Apply new current time        
-        pygame.display.flip()
+        rangeupdater()
     for i in range(42):
         car.move(10,0)
         updater()
         l4.landmark_update()
-        mainTimer.start()
-        mainTimer.count() # Get current time
-        mainTimer.update(screen, font) # Apply new current time        
-        pygame.display.flip()  
-    for i in range(9):
+        rangeupdater()  
+    for i in range(10):
+        if i==8:
+            yellow.yellow_update()
+        if i==9:
+            pygame.time.delay(3000)
+            green.green_update()
         car.move(0,10)
         updateb()
         l4.landmark_update()
-        mainTimer.start()
-        mainTimer.count() # Get current time
-        mainTimer.update(screen, font) # Apply new current time        
-        pygame.display.flip()
+        rangeupdater()
     for i in range(38):
         car.move(-10,0)
         update()
+        pygame.draw.rect(screen,blue,start)
+        pygame.draw.rect(screen,blue,stop)
+        screen.blit(bfont.render("Treasure:", 1, dblue),[160,500])
+        screen.blit(bfont.render("D", 1, dblue),[240,530])
         c3.coin_update()
-        mainTimer.start()
-        mainTimer.count() # Get current time
-        mainTimer.update(screen, font) # Apply new current time        
-        pygame.display.flip()
+        rangeupdater()
         true = 0
         
 pygame.display.flip()
