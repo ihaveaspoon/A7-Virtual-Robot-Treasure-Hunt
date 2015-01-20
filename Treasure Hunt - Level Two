@@ -56,13 +56,16 @@ class start_button:
 
     def loop(self):
         while True:
-                for event in pygame.event.get():
-                        if event.type == pygame.QUIT:
-                               terminate()
-                        elif event.type == pygame.KEYDOWN:
-                                if event.key == K_ESCAPE:# pressing escape quit
-                                    terminate()
-                                return
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    self.quit=pygame.quit()
+                    self.sys=sys.exit()
+                    
+                elif event.type == pygame.KEYDOWN:
+                    if event.key == K_ESCAPE:           # pressing escape quit
+                        self.quit=pygame.quit()
+                        self.sys=sys.exit()
+                    return
                             
     def drawText(self,text, font, surface, x, y,TEXTCOLOR):
             self.x=x
