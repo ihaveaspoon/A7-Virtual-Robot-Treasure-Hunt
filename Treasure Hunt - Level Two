@@ -1,4 +1,4 @@
-#Level One - Treasure Hunt
+#Level Two - Treasure Hunt
 #A7
 
 #Import Modules/Libraries
@@ -16,8 +16,7 @@ pygame.init()
 pygame.display.set_caption('Treasure Hunt - Level Two')
 screen = pygame.display.set_mode([640,580])
 white = (255,255,255)
-screen.fill(white)                      #make it in to white screen
-
+screen.fill(white)  #make it in to white screen
 
 #Creating colours
 white = (255,255,255)
@@ -29,7 +28,7 @@ font = pygame.font.SysFont("monospace", 40) # Time font
 bfont = pygame.font.SysFont("monospace", 30) # Button font
 cfont = pygame.font.SysFont("monospace", 20) # Score Font
 
-# Buttons
+#Buttons
 start = 150,480,200,200
 stop = 150,550,150,50
 
@@ -43,6 +42,7 @@ screen.blit(bfont.render("Checkpoint", 1, dblue),[160,500])
 screen.blit(cfont.render("Score:", 1, dblue),[20,520])
 pygame.draw.rect(screen,blue,stop)
 
+#Start Screen
 #Create a start SCreen
 class start_button:
 
@@ -77,9 +77,7 @@ class start_button:
             self.textrect.topleft = (self.x,self.y)
             surface.blit(self.textobj, self.textrect)
 
-
-#Creating class for Car
-class Car:
+class Car: #Creating class for Car
     global screen
     def __init__(self, x, y):
         self.car_img = "player_car.png"
@@ -94,7 +92,7 @@ class Car:
         self.car_loadt = pygame.image.load(self.car_imgt)
         self.car_loadb = pygame.image.load(self.car_imgb)
         self.car_loadr = pygame.image.load(self.car_imgr)
-        self.car      = self.car_load.get_rect()
+        self.car = self.car_load.get_rect()
         self.car.x = self.x
         self.car.y = self.y
         
@@ -116,7 +114,8 @@ class Car:
         screen.blit(self.rotate90,self.car)
         pygame.display.flip()
 
-class Coin:
+
+class Coin: #Creating class for the scores
     global screen
     def __init__ (self,x,y):
         self.coin_img = "retro_coin.png"
@@ -249,12 +248,9 @@ class Timer(object):
 		dmin = floor(((dms%86400000)%3600000)/60000)
 		dsec = floor((((dms%86400000)%3600000)%60000)/1000)
 		dten = floor(((((dms%86400000)%3600000)%60000)%1000)/10)
-
-
 		pygame.draw.rect(screen, (0,206,209), (350,480,500,300)) # Color background section
 
 		# Blit onto screen
-
 		screen.blit(font.render(str("%.2f"%(dmin/100)).split(".")[1], 1, white),[350,500])
 		screen.blit(font.render(":", 1, blue),[425,500])
 		screen.blit(font.render(str("%.2f"%(dsec/100)).split(".")[1], 1, white),[460,500])
@@ -278,22 +274,24 @@ l2.create()
 update()
 
 #Landmarks
-l1 = Landmark(130,120)
+l1 = Landmark(230,35)
 l1.create()
-l2 = Landmark(325,70)
+l2 = Landmark(320,120)
 l2.create()
-l3 = Landmark(430,150)
+l3 = Landmark(400,200)
 l3.create()
 l4 = Landmark(500,400)
 l4.create()
 
 #Coins
-c1 = Coin(20,540)
+c1 = Coin(40,540)
 c1.create()
-c2 = Coin(40,540)
+c2 = Coin(60,540)
 c2.create()
-c3 = Coin(60,540)
+c3 = Coin(80,540)
 c3.create()
+c4 = Coin(20,540)
+c4.create()
 
 #Traffic Lights
 yellow=Yellow(45,490)
@@ -306,11 +304,10 @@ update()
 
 # show the start screen
 TW=start_button()
-TW.drawText('Let start the game!!', font, screen,150,220,(255,0,0))
-TW.drawText('Press a key to start.', font, screen, 120, 300,(255,255,255))
+TW.drawText('Treasure Hunt!', font, screen,150,220,(255,0,0))
+TW.drawText('Press any key to start.', font, screen, 80, 300,(255,255,255))
 pygame.display.update()
 TW.loop()
-
 
 #test
 running = True
@@ -355,7 +352,7 @@ while true:
     for i in range(10):
         car.move(0,10)
         updateb()
-        l1.landmark_update()
+        c4.coin_update()
         l2.landmark_update()
         l3.landmark_update()
         l4.landmark_update()
@@ -366,7 +363,6 @@ while true:
     for i in range(10):
         car.move(10,0)
         updater()
-        l1.landmark_update()
         l2.landmark_update()
         l3.landmark_update()
         l4.landmark_update()
@@ -377,7 +373,6 @@ while true:
     for i in range(10):
         car.move(0,-10)
         updatet()
-        l1.landmark_update()
         l2.landmark_update()
         l3.landmark_update()
         l4.landmark_update()
@@ -388,7 +383,6 @@ while true:
     for i in range(24):
         car.move(10,0)
         updater()
-        l1.landmark_update()
         l3.landmark_update()
         l4.landmark_update()
         screen.blit(bfont.render("A", 1, dblue),[240,550])
@@ -400,7 +394,6 @@ while true:
     for i in range(8):
         car.move(0,10)
         updateb()
-        l1.landmark_update()
         l3.landmark_update()
         l4.landmark_update()
         mainTimer.start()
@@ -410,7 +403,6 @@ while true:
     for i in range(13):
         car.move(-10,0)
         update()
-        l1.landmark_update()
         l3.landmark_update()
         l4.landmark_update()
         mainTimer.start()
@@ -420,7 +412,6 @@ while true:
     for i in range(12):
         car.move(0,10)
         updateb()
-        l1.landmark_update()
         l3.landmark_update()
         l4.landmark_update()
         c2.coin_update()
@@ -431,7 +422,6 @@ while true:
     for i in range(29):
         car.move(-10,0)
         update()
-        l1.landmark_update()
         l4.landmark_update()
         mainTimer.start()
         mainTimer.count() # Get current time
@@ -440,7 +430,6 @@ while true:
     for i in range(10):
         car.move(0,10)
         updateb()
-        l1.landmark_update()
         l4.landmark_update()
         mainTimer.start()
         mainTimer.count() # Get current time
@@ -449,7 +438,6 @@ while true:
     for i in range(42):
         car.move(10,0)
         updater()
-        l1.landmark_update()
         l4.landmark_update()
         mainTimer.start()
         mainTimer.count() # Get current time
@@ -458,7 +446,6 @@ while true:
     for i in range(9):
         car.move(0,10)
         updateb()
-        l1.landmark_update()
         l4.landmark_update()
         mainTimer.start()
         mainTimer.count() # Get current time
@@ -467,12 +454,12 @@ while true:
     for i in range(38):
         car.move(-10,0)
         update()
-        l1.landmark_update()
         c3.coin_update()
         mainTimer.start()
         mainTimer.count() # Get current time
         mainTimer.update(screen, font) # Apply new current time        
         pygame.display.flip()
         true = 0
+        
 pygame.display.flip()
 pygame.display.quit()
