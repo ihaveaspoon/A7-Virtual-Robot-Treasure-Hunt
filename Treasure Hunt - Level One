@@ -277,7 +277,7 @@ update()
 # show the start screen
 TW=start_button()
 TW.drawText('Treasure Hunt!', font, screen,150,220,(255,0,0))
-TW.drawText('Press a key to start.', font, screen, 80, 300,(255,255,255))
+TW.drawText('Press any key to start.', font, screen, 80, 300,(255,255,255))
 pygame.display.update()
 TW.loop()
 
