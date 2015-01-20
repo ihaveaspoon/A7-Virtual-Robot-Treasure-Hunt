@@ -262,20 +262,17 @@ screen.blit(bg, background_position)
 #Creating Instance of Car
 car = Car(250,380)
 car.create()
-l1 = Landmark(100,90)
-l1.create()
-l2 = Landmark(290,85)
-l2.create()
+
 update()
 
 #Landmarks
 l1 = Landmark(230,35)
 l1.create()
-l2 = Landmark(320,120)
+l2 = Landmark(230,120)
 l2.create()
 l3 = Landmark(400,200)
 l3.create()
-l4 = Landmark(500,400)
+l4 = Landmark(530,400)
 l4.create()
 
 #Coins
@@ -366,14 +363,17 @@ while true:
     for i in range(10):
         car.move(10,0)
         updater()
-        l2.landmark_update()
+        c1.coin_update()
+        pygame.draw.rect(screen,blue,start)
+        pygame.draw.rect(screen,blue,stop)
+        screen.blit(bfont.render("Treasure:", 1, dblue),[160,500])
+        screen.blit(bfont.render("B", 1, dblue),[240,530])
         l3.landmark_update()
         l4.landmark_update()
         rangeupdater()
     for i in range(10):
         car.move(0,-10)
         updatet()
-        l2.landmark_update()
         l3.landmark_update()
         l4.landmark_update()
         rangeupdater()
@@ -382,10 +382,6 @@ while true:
         updater()
         l3.landmark_update()
         l4.landmark_update()
-        pygame.draw.rect(screen,blue,start)
-        pygame.draw.rect(screen,blue,stop)
-        screen.blit(bfont.render("Treasure:", 1, dblue),[160,500])
-        screen.blit(bfont.render("B", 1, dblue),[240,530])
         c1.coin_update()
         rangeupdater()
     for i in range(8):
@@ -410,7 +406,6 @@ while true:
         updateb()
         l3.landmark_update()
         l4.landmark_update()
-        c2.coin_update()
         rangeupdater()
     for i in range(29):
         car.move(-10,0)
@@ -420,6 +415,7 @@ while true:
         screen.blit(bfont.render("Treasure:", 1, dblue),[160,500])
         screen.blit(bfont.render("C", 1, dblue),[240,530])
         l4.landmark_update()
+        c2.coin_update()
         rangeupdater()
     for i in range(10):
         car.move(0,10)
