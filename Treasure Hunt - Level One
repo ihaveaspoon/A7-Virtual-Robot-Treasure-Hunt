@@ -2,14 +2,12 @@
 #A7
 
 #Import Modules/Libraries
-import pygame, random, sys
 import pygame
 import time
 from time import sleep
 from pygame.transform import rotate
 from time import time
 from math import floor
-from pygame.locals import *
 
 
 
@@ -26,10 +24,9 @@ screen.fill(white)                      #make it in to white screen
 white = (255,255,255)
 blue = (176,224,230)
 dblue = (0,129,242)
-
 # Set fonts 
 font = pygame.font.SysFont("monospace", 40) # Time font
-bfont = pygame.font.SysFont("monospace", 30) # Button font
+bfont = pygame.font.SysFont("monospace", 20) # Button font
 
 # Buttons
 start = 150,480,200,200
@@ -41,43 +38,8 @@ background_position = [0,0]
 
 # Start and stop buttons
 pygame.draw.rect(screen,blue,start)
-screen.blit(bfont.render("Checkpoint", 1, dblue),[160,500])
+screen.blit(bfont.render("Treasure status:", 1, dblue),[160,500])
 pygame.draw.rect(screen,blue,stop)
-
-#Create a start SCreen
-class start_button:
-
-    def __intit__(self,x,y):
-        self.button= pg.key.get_pressed()
-        self.x=x
-        self.y=y
-        self.text= text
-        self.font=font
-        self.surface=surface
-
-
-    #def terminate(self):
-     #       quitpygame.quit()
-      #      sys.exit()
-    def loop(self):
-        while True:
-                for event in pygame.event.get():
-                        if event.type == pygame.QUIT:
-                               terminate()
-                        elif event.type == pygame.KEYDOWN:
-                                if event.key == K_ESCAPE:# pressing escape quit
-                                    terminate()
-                                return
-                            
-    def drawText(self,text, font, surface, x, y,TEXTCOLOR):
-            self.x=x
-            self.y=y
-            self.color=TEXTCOLOR
-            self.textobj = font.render(text, 1, self.color)
-            self.textrect = self.textobj.get_rect()
-            self.textrect.topleft = (self.x,self.y)
-            surface.blit(self.textobj, self.textrect)
-
 
 #Creating class for Car
 class Car:
@@ -111,15 +73,6 @@ class Car:
     def move(self, x, y):
         self.car = self.car.move(x, y)
         sleep(0.05)
-    def rotation(self,A):
-        self.angle=A
-        #self.tx=tx
-        #self.ty=ty
-        #self.c=(self.tx,ty)
-        self.rotate90 = pygame.transform.rotate(self.car_load,self.angle)
-        screen.blit(self.rotate90,self.car)
-        pygame.display.flip()
-       
 class Landmark: #Creating class for Landmarks
     global screen
     def __init__(self, x, y):
@@ -181,13 +134,6 @@ class Green:
         self.green.y=self.y
     def green_update(self):
         screen.blit(self.green_load,self.green)
-
-
-"""    def green_update(self):
-        screen.blit(self.green_load,self.green)
-        green.create()"""
-
-
 def update():
     screen.blit(bg, background_position)
     car.car_update()
@@ -207,8 +153,6 @@ def updateb():
     
 #Creating timer class  
 class Timer(object):
-	"""Timer object"""
-
 	def __init__(self):
 		# Initialize of timer
 
@@ -272,11 +216,11 @@ update()
 #Landmarks
 l1 = Landmark(230,35)
 l1.create()
-l2 = Landmark(320,120)
+l2 = Landmark(360,150)
 l2.create()
 l3 = Landmark(400,200)
 l3.create()
-l4 = Landmark(500,400)
+l4 = Landmark(530,400)
 l4.create()
 
 #Traffic Lights
@@ -287,13 +231,6 @@ green.create()
 red=Red(45,490)
 red.create()
 update()
-
-# show the start screen
-TW=start_button()
-TW.drawText('Let start the game!!', font, screen,150,220,(255,0,0))
-TW.drawText('Press a key to start.', font, screen, 120, 300,(255,255,255))
-pygame.display.update()
-TW.loop()
 
 #test
 running = True
@@ -325,11 +262,10 @@ while true:
         mainTimer.count() # Get current time
         mainTimer.update(screen, font) # Apply new current time
     for i in range(19):
-        if i==17:
-            red.red_update()
-        if i==18:
-            #red.red_update()
-            pygame.time.delay(1000)
+        if i==13:
+            yellow.yellow_update()
+        if i==14:
+            pygame.time.delay(3000)
             green.green_update()
         car.move(10,0)
         updater()
@@ -353,10 +289,14 @@ while true:
         mainTimer.update(screen, font) # Apply new current time
         pygame.display.flip()
     for i in range(10):
+        if i==8:
+            yellow.yellow_update()
+        if i==9:
+            pygame.time.delay(3000)
+            green.green_update()
         car.move(10,0)
         updater()
-        #l1.landmark_update()
-        l2.landmark_update
+        l2.landmark_update()
         l3.landmark_update()
         l4.landmark_update()
         mainTimer.start()
@@ -366,8 +306,6 @@ while true:
     for i in range(10):
         car.move(0,-10)
         updatet()
-        #l1.landmark_update()
-        l2.landmark_update()
         l3.landmark_update()
         l4.landmark_update()
         mainTimer.start()
@@ -377,11 +315,8 @@ while true:
     for i in range(24):
         car.move(10,0)
         updater()
-        #l1.landmark_update()
-        l2.landmark_update()
         l3.landmark_update()
         l4.landmark_update()
-        screen.blit(bfont.render("A", 1, dblue),[240,550])
         mainTimer.start()
         mainTimer.count() # Get current time
         mainTimer.update(screen, font) # Apply new current time
@@ -389,8 +324,6 @@ while true:
     for i in range(8):
         car.move(0,10)
         updateb()
-        #l1.landmark_update()
-        l2.landmark_update()
         l3.landmark_update()
         l4.landmark_update()
         mainTimer.start()
@@ -400,8 +333,6 @@ while true:
     for i in range(13):
         car.move(-10,0)
         update()
-        l1.landmark_update()
-        l2.landmark_update()
         l3.landmark_update()
         l4.landmark_update()
         mainTimer.start()
@@ -409,10 +340,14 @@ while true:
         mainTimer.update(screen, font) # Apply new current time
         pygame.display.flip()
     for i in range(12):
+        if i==10:
+            red.red_update()
+            screen.blit(font.render("FOUND!", 1, white),[190,530])
+        if i==11:
+            pygame.time.delay(5000)
+            green.green_update()
         car.move(0,10)
         updateb()
-        l1.landmark_update()
-        l2.landmark_update()
         l3.landmark_update()
         l4.landmark_update()
         mainTimer.start()
@@ -422,9 +357,6 @@ while true:
     for i in range(29):
         car.move(-10,0)
         update()
-        l1.landmark_update()
-        l2.landmark_update()
-        l3.landmark_update()
         l4.landmark_update()
         mainTimer.start()
         mainTimer.count() # Get current time
@@ -433,9 +365,6 @@ while true:
     for i in range(10):
         car.move(0,10)
         updateb()
-        l1.landmark_update()
-        l2.landmark_update()
-        l3.landmark_update()
         l4.landmark_update()
         mainTimer.start()
         mainTimer.count() # Get current time
@@ -444,32 +373,28 @@ while true:
     for i in range(42):
         car.move(10,0)
         updater()
-        l1.landmark_update()
-        l2.landmark_update()
-        l3.landmark_update()
         l4.landmark_update()
         mainTimer.start()
         mainTimer.count() # Get current time
         mainTimer.update(screen, font) # Apply new current time        
         pygame.display.flip()  
     for i in range(10):
+        if i==8:
+            yellow.yellow_update()
+        if i==9:
+            pygame.time.delay(3000)
+            green.green_update()
         car.move(0,10)
         updateb()
-        l1.landmark_update()
-        l2.landmark_update()
-        l3.landmark_update()
         l4.landmark_update()
         mainTimer.start()
         mainTimer.count() # Get current time
         mainTimer.update(screen, font) # Apply new current time        
         pygame.display.flip()
+    update()
     for i in range(38):
         car.move(-10,0)
         update()
-        l1.landmark_update()
-        l2.landmark_update()
-        l3.landmark_update()
-        l4.landmark_update()
         mainTimer.start()
         mainTimer.count() # Get current time
         mainTimer.update(screen, font) # Apply new current time        
