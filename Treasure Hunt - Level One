@@ -2,12 +2,14 @@
 #A7
 
 #Import Modules/Libraries
+import pygame, random, sys
 import pygame
 import time
 from time import sleep
 from pygame.transform import rotate
 from time import time
 from math import floor
+from pygame.locals import *
 
 
 
