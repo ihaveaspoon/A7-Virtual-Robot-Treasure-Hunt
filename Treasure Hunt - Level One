@@ -42,6 +42,41 @@ pygame.draw.rect(screen,blue,start)
 screen.blit(bfont.render("Checkpoint", 1, dblue),[160,500])
 pygame.draw.rect(screen,blue,stop)
 
+#Create a start SCreen
+class start_button:
+
+    def __intit__(self,x,y):
+        self.button= pg.key.get_pressed()
+        self.x=x
+        self.y=y
+        self.text= text
+        self.font=font
+        self.surface=surface
+
+
+    #def terminate(self):
+     #       quitpygame.quit()
+      #      sys.exit()
+    def loop(self):
+        while True:
+                for event in pygame.event.get():
+                        if event.type == pygame.QUIT:
+                               terminate()
+                        elif event.type == pygame.KEYDOWN:
+                                if event.key == K_ESCAPE:# pressing escape quit
+                                    terminate()
+                                return
+                            
+    def drawText(self,text, font, surface, x, y,TEXTCOLOR):
+            self.x=x
+            self.y=y
+            self.color=TEXTCOLOR
+            self.textobj = font.render(text, 1, self.color)
+            self.textrect = self.textobj.get_rect()
+            self.textrect.topleft = (self.x,self.y)
+            surface.blit(self.textobj, self.textrect)
+
+
 #Creating class for Car
 class Car:
     global screen
@@ -250,6 +285,13 @@ green.create()
 red=Red(45,490)
 red.create()
 update()
+
+# show the start screen
+TW=start_button()
+TW.drawText('Let start the game!!', font, screen,150,220,(255,0,0))
+TW.drawText('Press a key to start.', font, screen, 120, 300,(255,255,255))
+pygame.display.update()
+TW.loop()
 
 #test
 running = True
