@@ -45,7 +45,6 @@ pygame.draw.rect(screen,blue,stop)
 #Start Screen
 #Create a start SCreen
 class start_button:
-
     def __intit__(self,x,y):
         self.button= pg.key.get_pressed()
         self.x=x
@@ -146,7 +145,7 @@ class Landmark: #Creating class for Landmarks
     def landmark_update(self):
         screen.blit(self.landmark_load, self.landmark)
 
-class Red:
+class Red: #Creating class for the red light
     global screen
     def __init__(self, x, y):
         self.red_img = "red.png"
@@ -162,7 +161,7 @@ class Red:
     def red_update(self):
         screen.blit(self.red_load,self.red)
 
-class Yellow:
+class Yellow: #Creating the class for the yellow light
     global screen
     def __init__(self, x, y):
         self.yellow_img = "yellow.png"
@@ -180,7 +179,7 @@ class Yellow:
 
 
 
-class Green:
+class Green: # Creating class for the green light
     global screen
     def __init__(self, x, y):
         self.green_img = "green.png"
@@ -194,7 +193,7 @@ class Green:
         self.green.y=self.y
     def green_update(self):
         screen.blit(self.green_load,self.green)
-
+#FUnctions used for updating the screen
 def update():
     screen.blit(bg, background_position)
     car.car_update()
@@ -265,7 +264,6 @@ screen.blit(bg, background_position)
 #Creating Instance of Car
 car = Car(250,380)
 car.create()
-
 update()
 
 #Landmarks
@@ -303,8 +301,7 @@ TW.drawText('Treasure Hunt!', font, screen,150,220,(255,0,0))
 TW.drawText('Press any key to start.', font, screen, 80, 300,(255,255,255))
 pygame.display.update()
 TW.loop()
-
-#test
+#Timer
 running = True
 timerOn = 0 # Start timer flag
 def rangeupdater():
