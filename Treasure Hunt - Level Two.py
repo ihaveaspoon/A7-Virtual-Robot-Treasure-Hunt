@@ -331,10 +331,13 @@ while true:
         pygame.display.flip()
         rangeupdater()
     for i in range(19):
-        if i==13:
+        if i==12:
+            red.red_update()
+        if i ==13:
+            pygame.time.delay(100)
             yellow.yellow_update()
         if i==14:
-            pygame.time.delay(3000)
+            pygame.time.delay(1500)
             green.green_update()
         car.move(10,0)
         updater()
@@ -344,10 +347,13 @@ while true:
         l4.landmark_update()
         rangeupdater()
     for i in range(10):
-        if i==8:
+        if i==7:
+            red.red_update()
+        if i ==8:
+            pygame.time.delay(100)
             yellow.yellow_update()
         if i==9:
-            pygame.time.delay(3000)
+            pygame.time.delay(1500)
             green.green_update()
         car.move(0,10)
         updateb()
@@ -397,11 +403,7 @@ while true:
         l4.landmark_update()
         rangeupdater()
     for i in range(12):
-        if i==10:
-            red.red_update()
-        if i==11:
-            green.green_update()
-            pygame.time.delay(5000)
+
         car.move(0,10)
         updateb()
         l3.landmark_update()
@@ -428,10 +430,13 @@ while true:
         l4.landmark_update()
         rangeupdater()  
     for i in range(10):
+        if i ==7:
+            red.red_update()
         if i==8:
+            pygame.time.delay(100)
             yellow.yellow_update()
         if i==9:
-            pygame.time.delay(3000)
+            pygame.time.delay(1500)
             green.green_update()
         car.move(0,10)
         updateb()
