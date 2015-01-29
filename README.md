@@ -4,5 +4,6 @@ The Virtual robot treasure hunt project involves the robot to move towards landm
 
 
 To run the program Python must be installed along with Pygame.
+
 TO RUN THE PROGRAM THE FOLLOWING IMAGES MUST BE INSTALLED IN THE SAME LOCATION AS THE PROGRAM FILE.
 Images : https://drive.google.com/folderview?id=0BzvSAXTOpF7CeENlRmxTUGdsQm8&usp=sharing
