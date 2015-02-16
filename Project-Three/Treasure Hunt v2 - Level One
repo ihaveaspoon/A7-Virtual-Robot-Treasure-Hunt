@@ -1,0 +1,194 @@
+#Treasure Hunt - Part Two
+#A7
+
+import pygame, random, sys
+import pygame
+import time
+import math
+from time import sleep
+from pygame.transform import rotate
+from time import time
+from math import floor
+from pygame.locals import *
+
+#Initialise Pygame/canvas
+pygame.init()
+pygame.display.set_caption('Treasure Hunt - Level Two')
+screen = pygame.display.set_mode([640,580])
+white = (255,255,255)
+screen.fill(white)  #make it in to white screen
+
+#Creating colours
+white = (255,255,255)
+blue = (176,224,230)
+dblue = (0,129,242)
+
+#Creating colours
+white = (255,255,255)
+blue = (176,224,230)
+dblue = (0,129,242)
+
+# Set fonts 
+font = pygame.font.SysFont("monospace", 40) # Time font
+bfont = pygame.font.SysFont("monospace", 30) # Button font
+cfont = pygame.font.SysFont("monospace", 20) # Score Font
+
+#Buttons
+start = 150,480,200,200
+stop = 150,550,150,50
+#Import background
+bg = pygame.image.load("kart.jpg").convert()
+background_position = [0,0]
+
+# Start and stop buttons
+pygame.draw.rect(screen,blue,start)
+screen.blit(bfont.render("Treasure:", 1, dblue),[160,500])
+screen.blit(cfont.render("Score:", 1, dblue),[20,520])
+pygame.draw.rect(screen,blue,stop)
+
+#Start Screen
+#Create a start SCreen
+"""class start_button:
+    def __intit__(self,x,y):
+        self.button= pg.key.get_pressed()
+        self.x=x
+        self.y=y
+        self.text= text
+        self.font=font
+        self.surface=surface
+
+    def loop(self):
+        while True:
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    self.quit=pygame.quit()
+                    self.sys=sys.exit()
+                    
+                elif event.type == pygame.KEYDOWN:
+                    if event.key == K_ESCAPE:           # pressing escape quit
+                        self.quit=pygame.quit()
+                        self.sys=sys.exit()
+                    return
+                            
+    def drawText(self,text, font, surface, x, y,TEXTCOLOR):
+            self.x=x
+            self.y=y
+            self.color=TEXTCOLOR
+            self.textobj = font.render(text, 1, self.color)
+            self.textrect = self.textobj.get_rect()
+            self.textrect.topleft = (self.x,self.y)
+            surface.blit(self.textobj, self.textrect)"""
+
+class Car: #Creating class for car
+    global screen
+    def __init__(self, x, y):
+        self.car_img = "player_car.png"
+        self.x = x
+        self.y = y
+    def create(self):
+        self.car_load = pygame.image.load(self.car_img)
+        self.car = self.car_load.get_rect()
+        self.car.x = self.x
+        self.car.y = self.y               
+    def car_update(self):
+        screen.blit(self.car_load, self.car)
+    def move(self, x, y):
+        self.car = self.car.move(x, y)
+        sleep(0.05)
+      
+class Landmark: #Creating class for Landmarks
+    global screen
+    image = []
+    def __init__(self, x, y):
+        self.landmark_img = "traffic_cone.png"
+        self.x = x
+        self.y = y
+
+    def create(self):
+        self.landmark_load = pygame.image.load(self.landmark_img)
+        self.landmark      = self.landmark_load.get_rect()
+        self.landmark.x = self.x
+        self.landmark.y = self.y
+
+    def landmark_update(self):
+        screen.blit(self.landmark_load, self.landmark)
+
+#Creating timer class  
+class Timer(object):
+
+	def __init__(self):
+		# Initialize of timer
+		self.currentTime = 0
+		self.startTime = 0
+		self.offset = 0
+		self.running = False
+
+	def start(self):
+		# Starts the timer
+		if not self.running:
+			self.startTime = time()
+		self.running = True
+
+	def stop(self):
+		# Stops the timer
+		self.offset = (time() - self.startTime) + self.offset
+		self.running = False
+
+	def count(self):
+		# Gets the timers current time
+		if self.running:
+			self.currentTime = (time() - self.startTime) + self.offset
+
+	def update(self, screen, font):
+		# Updates timer with current time
+		dms = self.currentTime*1000 # Get current time
+
+		# Do all the math
+		dmin = floor(((dms%86400000)%3600000)/60000)
+		dsec = floor((((dms%86400000)%3600000)%60000)/1000)
+		dten = floor(((((dms%86400000)%3600000)%60000)%1000)/10)
+		pygame.draw.rect(screen, (0,206,209), (350,480,500,300)) # Color background section
+
+		# Blit onto screen
+		screen.blit(font.render(str("%.2f"%(dmin/100)).split(".")[1], 1, white),[350,500])
+		screen.blit(font.render(":", 1, blue),[425,500])
+		screen.blit(font.render(str("%.2f"%(dsec/100)).split(".")[1], 1, white),[460,500])
+		screen.blit(font.render(":", 1, blue),[535,500])
+		screen.blit(font.render(str("%.2f"%(dten/100)).split(".")[1], 1, white),[570,500])
+		
+mainTimer = Timer()# Create new timer object
+mainTimer.update(screen, font) # Initially update the screen
+
+def update():
+    screen.blit(bg, background_position)
+    car.car_update()
+    pygame.display.flip()
+
+#Creating Instance of car
+car = Car(250,380)
+car.create()
+update()
+
+# show the start screen
+"""TW=start_button()
+TW.drawText('Treasure Hunt!', font, screen,150,220,(255,0,0))
+TW.drawText('Press any key to start.', font, screen, 80, 300,(255,255,255))
+pygame.display.update()TW.loop()"""
+
+#Timer
+running = True
+timerOn = 0 # Start timer flag
+LEFT=1
+while running:
+  for event in pygame.event.get():
+    if event.type == pygame.QUIT:
+      running = 0
+    if event.type == pygame.MOUSEBUTTONDOWN and event.button == LEFT:
+       print "(%d, %d)" % event.pos
+       
+
+       
+       
+
+pygame.display.flip()
+
