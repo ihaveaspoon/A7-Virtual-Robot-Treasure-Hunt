@@ -34,6 +34,7 @@ pygame.draw.rect(screen,blue,stop)
 
 #Creating Class for the Robot
 class Robot:
+    tR = []
     def __init__(self, x, y):
         self.x = x
         self.y = y
@@ -43,8 +44,18 @@ class Robot:
         self.rect = self.rbti.get_rect()
         self.rect.x = self.x
         self.rect.y = self.y
+        Robot.tR.append((self.rbti, self.rect))
     def blitter(self):
         screen.blit(self.rbti, self.rect)
+    def whoami(self):
+        return self.rect
+    def move(self, x, y):
+        self.old_loc = self.rect
+        self.rect.x = x
+        self.rect.y = y
+        for i in range(len(Robot.tR)):
+            if Robot.tR[i][1] == self.old_loc:
+                Robot.tR[i] = (self.rbti, self.rect)
 
 class Treasure:
     tL = []
@@ -58,15 +69,9 @@ class Treasure:
         self.rect.x = self.x
         self.rect.y = self.y
         Treasure.tL.append((self.tri, self.rect))
-    def whoami(self):
-        return self.rect
-    def move(self, x, y):
-        self.old_loc = self.rect
-        self.rect.x = x
-        self.rect.y = y
-        for i in range(len(Treasure.tL)):
-            if Treasure.tL[i][1] == self.old_loc:
-                Treasure.tL[i] = (self.tri, self.rect)
+    def update(self):
+        screen.blit(self.tri, self.rect)
+
 
 def update():
     screen.blit(bg, background_position)
@@ -75,6 +80,8 @@ def update():
     screen.blit(bfont.render("Treasure:", 1, dblue),[160,500])
     screen.blit(cfont.render("Score:", 1, dblue),[20,520])
     pygame.draw.rect(screen,blue,stop)
+    for r in Robot.tR:
+        screen.blit(r[0], r[1])
     for t in Treasure.tL:
         screen.blit(t[0], t[1])
     pygame.display.flip()
@@ -83,15 +90,9 @@ def update():
 #Instances
 R1 = Robot(10,10)
 R1.create()
-T1 = Treasure(300,250)
-T2 = Treasure(200,100)
-T3 = Treasure(50,100)
-T1.create()
-T2.create()
-T3.create()
 update()
 move = False
-treasures = [T1, T2, T3]
+robots = [R1]
 
 #While Loop
 while True:
@@ -102,19 +103,23 @@ while True:
 
         elif event.type == pygame.MOUSEBUTTONUP and move:
             (mouseX, mouseY) = pygame.mouse.get_pos()
-            for i in range(len(treasures)):
-                if treasures[i].whoami() == collidedWith[1]:
-                    treasures[i].move(mouseX, mouseY)
+            for i in range(len(robots)):
+                if robots[i].whoami() == collidedWith[1]:
+                    robots[i].move(mouseX, mouseY)
             update()
             move = False
             s = None
             
         elif event.type == pygame.MOUSEBUTTONDOWN:
             pos = pygame.mouse.get_pos()
-            for s in Treasure.tL:
+            for s in Robot.tR:
                 if s[1].collidepoint(pos):
                     move = True
                     collidedWith = s
+                    
         elif event.type == pygame.KEYDOWN:
-            if event.key == pygame.K_n:
-                Treasure(100,100).create()
+            if event.key == pygame.K_1:
+                (X,Y) = pygame.mouse.get_pos()
+                Treasure(X,Y).create()
+                update()
+                
