@@ -83,19 +83,44 @@ class timer(Tbox):
           self.frame_rate = 60
           self.s_time = self.a
           self.done =False
+    def wait(self):
+          while True:
+                  for event in pygame.event.get():
+                        if event.type == QUIT:
+                              pygame.quit()
+                              sys.exit()
+                        elif event.type == pygame.KEYDOWN:
+                              if event.key == K_SPACE:
+                                    return
+                                    #pygame.event.get_blocked(K_SPACE)
+                              
+
+
+
     # Main Program Loop 
     def update(self):
-        while not self.done:
+          self.mscreen.fill(white)
+          pygame.display.flip()
+          TW.wait()
+          
+          
+          while not self.done:
             for event in pygame.event.get(): # User did something
-                if event.type == pygame.QUIT: # If user clicked close
-                    self.done = True # Flag that we are done so we exit this loop
-                    self.quit=pygame.quit()
-                    self.sys=sys.exit()
-                elif event.type == pygame.KEYDOWN:
-                    if event.key == K_ESCAPE:           # pressing escape quit
+                  
+                  if event.type == pygame.QUIT: # If user clicked close
+                        self.done = True # Flag that we are done so we exit this loop
                         self.quit=pygame.quit()
                         self.sys=sys.exit()
-                    return
+                  elif event.type == pygame.KEYDOWN:
+                        if event.key == K_ESCAPE:           # pressing escape quit
+                              self.quit=pygame.quit()
+                              self.sys=sys.exit()
+                        return
+        
+            
+            '''for event in pygame.event.wait():
+                  if event.key == K_SPACE:
+                        break'''
 
             self.mscreen.fill(white)
             # Calculate total seconds
@@ -116,8 +141,9 @@ class timer(Tbox):
             #self.output_string = ("Time left: ", self.minutes, self.seconds)
             # Blit to the screen
             self.text = self.font.render(self.output_string, 1, ( 255,   0,   0))
-         
-            self.mscreen.blit(self.text, [250, 280])
+
+            #place the timer 
+            self.mscreen.blit(self.text, [400, 280])
          
             self.frame_count = self.frame_count + 1
             # Limit to 20 frames per second
@@ -131,4 +157,3 @@ class timer(Tbox):
 TW=timer()
 TW.update()
 pygame.display.flip()
-
