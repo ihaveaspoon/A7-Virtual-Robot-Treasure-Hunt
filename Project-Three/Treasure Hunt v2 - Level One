@@ -4,51 +4,51 @@ import pygame, random, sys, time, math
 
 #Creating colours
 white = (255,255,255)
-blue = (176,224,230)
-dblue = (0,129,242)
 
 #Initialise Pygame/canvas
 pygame.init()
 pygame.display.set_caption('Treasure Hunt') # Set the Title of window
-screen = pygame.display.set_mode([640,580]) #Set the screen size
+screen = pygame.display.set_mode([640,480]) #Set the screen size
 screen.fill(white)# Set the screen to white
 
 #Import background
-bg = pygame.image.load("kart.jpg").convert()
+bg = pygame.image.load("background.jpg").convert()
 background_position = [0,0]
 
-#Descripition Positions
-start = 150,480,200,200
-stop = 150,550,150,50
+#Descripition Background position
+back1 = 150,480,200,200
 
-# Set fonts 
-font = pygame.font.SysFont("monospace", 40) # Time font
-bfont = pygame.font.SysFont("monospace", 30) # Button font
-cfont = pygame.font.SysFont("monospace", 20) # Score Font
+#Set Font
+cfont = pygame.font.SysFont("Calibri", 24)
 
 #Adding descriptions to screen
-pygame.draw.rect(screen,blue,start)
-screen.blit(bfont.render("Treasure:", 1, dblue),[160,500])
-screen.blit(cfont.render("Score:", 1, dblue),[20,520])
-pygame.draw.rect(screen,blue,stop)
+screen.blit(cfont.render("Treasure:", 1, white),[10,40]) #Treasure text
+screen.blit(cfont.render("Score:", 1, white),[10,10]) #Score text
+screen.blit(cfont.render("Timer:", 1, white),[10,70]) #Timer text
 
 #Creating Class for the Robot
 class Robot:
+    #Robot list
     tR = []
+    #Initialise class
     def __init__(self, x, y):
         self.x = x
         self.y = y
-        self.ri = "player_car.png"
+        self.ri = "robot.png"
+    #Create function
     def create(self):
         self.rbti = pygame.image.load(self.ri)
         self.rect = self.rbti.get_rect()
         self.rect.x = self.x
         self.rect.y = self.y
         Robot.tR.append((self.rbti, self.rect))
-    def blitter(self):
+    #Function used to update screen
+    def rob_update(self):
         screen.blit(self.rbti, self.rect)
-    def whoami(self):
+    #Returns the position
+    def position(self):
         return self.rect
+    #Move function
     def move(self, x, y):
         self.old_loc = self.rect
         self.rect.x = x
@@ -57,38 +57,83 @@ class Robot:
             if Robot.tR[i][1] == self.old_loc:
                 Robot.tR[i] = (self.rbti, self.rect)
 
+#Creating class for the treasure
+
 class Treasure:
-    tL = []
     def __init__(self, x, y):
+        self.x= x
+        self.y= y
+#Sub classes of Treasure
+class Treasure1(Treasure):
+    tC = []
+    def __init__(self, x, y):
+        Treasure.__init__(self, x, y)
         self.x = x
         self.y = y
-        self.ti = "traffic_cone.png"
+        self.ci = "treasure.png"
     def create(self):
-        self.tri = pygame.image.load(self.ti)
-        self.rect = self.tri.get_rect()
+        self.cri = pygame.image.load(self.ci)
+        self.rect = self.cri.get_rect()
         self.rect.x = self.x
         self.rect.y = self.y
-        Treasure.tL.append((self.tri, self.rect))
+        Treasure1.tC.append((self.cri, self.rect))
     def update(self):
-        screen.blit(self.tri, self.rect)
+        screen.blit(self.cri, self.rect)
+
+class Treasure2(Treasure):
+    tC2 = []
+    def __init__(self, x, y):
+        Treasure.__init__(self, x, y)
+        self.x = x
+        self.y = y
+        self.bi = "treasure2.png"
+    def create(self):
+        self.bri = pygame.image.load(self.bi)
+        self.rect = self.bri.get_rect()
+        self.rect.x = self.x
+        self.rect.y = self.y
+        Treasure2.tC2.append((self.bri, self.rect))
+    def update(self):
+        screen.blit(self.bri, self.rect)
+
+class Treasure3(Treasure):
+    tC3 = []
+    def __init__(self, x, y):
+        Treasure.__init__(self, x, y)
+        self.x = x
+        self.y = y
+        self.bi2 = "treasure3.png"
+    def create(self):
+        self.bri2 = pygame.image.load(self.bi2)
+        self.rect = self.bri2.get_rect()
+        self.rect.x = self.x
+        self.rect.y = self.y
+        Treasure3.tC3.append((self.bri2, self.rect))
+    def update(self):
+        screen.blit(self.bri2, self.rect)
 
 
+#Update function
 def update():
     screen.blit(bg, background_position)
-    R1.blitter()
-    pygame.draw.rect(screen,blue,start)
-    screen.blit(bfont.render("Treasure:", 1, dblue),[160,500])
-    screen.blit(cfont.render("Score:", 1, dblue),[20,520])
-    pygame.draw.rect(screen,blue,stop)
+    screen.blit(cfont.render("Treasure:", 1, white),[10,40]) #Treasure text
+    screen.blit(cfont.render("Score:", 1, white),[10,10]) #Score text
+    screen.blit(cfont.render("Timer:", 1, white),[10,70]) #Timer text
+    R1.rob_update()
+    
     for r in Robot.tR:
         screen.blit(r[0], r[1])
-    for t in Treasure.tL:
-        screen.blit(t[0], t[1])
+    for c in Treasure1.tC:
+        screen.blit(c[0], c[1])
+    for b in Treasure2.tC2:
+        screen.blit(b[0], b[1])
+    for a in Treasure3.tC3:
+        screen.blit(a[0], a[1])
+
     pygame.display.flip()
 
-
 #Instances
-R1 = Robot(10,10)
+R1 = Robot(100,100)
 R1.create()
 update()
 move = False
@@ -104,7 +149,7 @@ while True:
         elif event.type == pygame.MOUSEBUTTONUP and move:
             (mouseX, mouseY) = pygame.mouse.get_pos()
             for i in range(len(robots)):
-                if robots[i].whoami() == collidedWith[1]:
+                if robots[i].position() == collidedWith[1]:
                     robots[i].move(mouseX, mouseY)
             update()
             move = False
@@ -119,7 +164,17 @@ while True:
                     
         elif event.type == pygame.KEYDOWN:
             if event.key == pygame.K_1:
-                (X,Y) = pygame.mouse.get_pos()
-                Treasure(X,Y).create()
+                (mouseX,mouseY) = pygame.mouse.get_pos()
+                Treasure1(mouseX,mouseY).create()
                 update()
+            if event.key == pygame.K_2:
+                (mouseX,mouseY) = pygame.mouse.get_pos()
+                Treasure2(mouseX,mouseY).create()
+                update()
+            if event.key == pygame.K_3:
+                (mouseX,mouseY) = pygame.mouse.get_pos()
+                Treasure3(mouseX,mouseY).create()
+                update()
+
+
                 
