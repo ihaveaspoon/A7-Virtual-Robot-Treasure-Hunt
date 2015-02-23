@@ -138,6 +138,7 @@ R1.create()
 update()
 move = False
 robots = [R1]
+count = 5
 
 #While Loop
 while True:
@@ -163,18 +164,18 @@ while True:
                     collidedWith = s
                     
         elif event.type == pygame.KEYDOWN:
-            if event.key == pygame.K_1:
-                (mouseX,mouseY) = pygame.mouse.get_pos()
-                Treasure1(mouseX,mouseY).create()
-                update()
-            if event.key == pygame.K_2:
-                (mouseX,mouseY) = pygame.mouse.get_pos()
-                Treasure2(mouseX,mouseY).create()
-                update()
-            if event.key == pygame.K_3:
-                (mouseX,mouseY) = pygame.mouse.get_pos()
-                Treasure3(mouseX,mouseY).create()
-                update()
-
-
-                
+                if event.key == pygame.K_1 and count > 0:
+                    (mouseX,mouseY) = pygame.mouse.get_pos()
+                    Treasure1(mouseX,mouseY).create()
+                    count = count - 1
+                    update()
+                if event.key == pygame.K_2 and count > 0:
+                    (mouseX,mouseY) = pygame.mouse.get_pos()
+                    Treasure2(mouseX,mouseY).create()
+                    count = count -1 
+                    update()
+                if event.key == pygame.K_3 and count > 0:
+                    (mouseX,mouseY) = pygame.mouse.get_pos()
+                    Treasure3(mouseX,mouseY).create()
+                    count = count - 1
+                    update()
