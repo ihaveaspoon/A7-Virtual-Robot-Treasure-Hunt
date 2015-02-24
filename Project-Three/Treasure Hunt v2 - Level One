@@ -1,14 +1,19 @@
 #Treasure Hunt - Part Two # A7 #
 #Importing Libraries 
-import pygame, random, sys, time, math
+import pygame, random, sys, time, math, pygame.font, pygame.event, pygame.draw, string
+import sys
 
 #Creating colours
 white = (255,255,255)
+black    = (   0,   0,   0)
+green    = (   0, 255,   0)
+red      = ( 255,   0,   0)
 
 #Initialise Pygame/canvas
 pygame.init()
 pygame.display.set_caption('Treasure Hunt') # Set the Title of window
-screen = pygame.display.set_mode([640,480]) #Set the screen size
+size = [640,480]
+screen = pygame.display.set_mode(size) #Set the screen size
 screen.fill(white)# Set the screen to white
 
 #Import background
@@ -20,11 +25,6 @@ back1 = 150,480,200,200
 
 #Set Font
 cfont = pygame.font.SysFont("Calibri", 24)
-
-#Adding descriptions to screen
-screen.blit(cfont.render("Treasure:", 1, white),[10,40]) #Treasure text
-screen.blit(cfont.render("Score:", 1, white),[10,10]) #Score text
-screen.blit(cfont.render("Timer:", 1, white),[10,70]) #Timer text
 
 #Creating Class for the Robot
 class Robot:
@@ -113,14 +113,124 @@ class Treasure3(Treasure):
         screen.blit(self.bri2, self.rect)
 
 
+class Tbox:
+    def get_key(self):
+        while True:
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    self.quit=pygame.quit()
+                    self.sys=sys.exit()
+                elif event.type == pygame.KEYDOWN:
+                    if event.key == pygame.K_ESCAPE:# pressing escape quit
+                        self.quit=pygame.quit()
+                        self.sys=sys.exit()
+                    return event.key
+                else:
+                    pass
+    def display_box(self,screen, message):
+        self.screen = pygame.display.set_mode((1000,100))
+        self.m = message
+        self.fontobject = pygame.font.Font(None,36)
+        "Print a message in a box in the middle of the screen"
+
+        pygame.draw.rect(self.screen, (0,0,0),(50,20,900,100), 0)
+        #the out line of the box
+        pygame.draw.rect(self.screen, (white),(48,18,800,30), 1)
+        if len(self.m) != 0:
+            screen.blit(self.fontobject.render(self.m, 1, (255,0,0)),(50, 20))
+        pygame.display.flip()
+
+    def ask(self,screen):
+        self.screen = pygame.display.set_mode((1000,100))
+        self.q = "Set the timer (seconds): "
+        "ask(screen, question) -> answer"
+        pygame.font.init()
+        self.current_integer = []
+        Tbox.display_box(self,screen, self.q  + string.join(self.current_integer))
+        while 1:
+            inkey = Tbox.get_key(self)
+            if inkey == pygame.K_BACKSPACE:
+                self.current_integer = self.current_integer[0:-1]
+            elif inkey == pygame.K_RETURN:
+                a = int(string.join(self.current_integer,""))
+                print a
+                break
+                
+            elif inkey == pygame.K_MINUS:
+                self.current_integer.append("_")
+            elif inkey <= 127:
+                self.current_integer.append(chr(inkey))
+            Tbox.display_box(self,screen, self.q  + string.join(self.current_integer))
+        return string.join(self.current_integer,"")
+    def SD(self):
+        self.a = int(string.join(self.current_integer,""))
+        print self.a
+        return self.a
+
+robotx = pygame.image.load("robot.png").convert()
+def timer():
+      Tbox()
+      size = [640,480]
+      screen = pygame.display.set_mode(size)
+      pygame.display.set_caption("Treasure Hunt")
+      bg = pygame.image.load("background.jpg").convert()
+      bg_position = [0,0]
+      clock = pygame.time.Clock()
+      font = pygame.font.Font(None, 24)
+      frame_count = 0
+      frame_rate = 600
+      s_time = int(TW.SD())
+      done =False
+
+      while not done:
+            for event in pygame.event.get(): # User did something
+                  if event.type == pygame.QUIT: # If user clicked close
+                        done = True # Flag that we are done so we exit this loop
+                        pygame.quit()
+                        sys.exit()
+                  elif event.type == pygame.KEYDOWN:
+                        if event.key == pygame.K_ESCAPE:           # pressing escape quit
+                              pygame.quit()
+                              sys.exit()
+                        return
+        
+            screen.fill(white)
+            # Calculate total seconds
+            total_seconds = s_time - (frame_count // frame_rate)
+            if total_seconds < 0:
+                  total_seconds = 0
+                  pygame.quit ()
+                  sys.exit()
+                  break
+                
+            # Divide by 60 to get total minutes
+            minutes = total_seconds // 60
+     
+            # Use modulus (remainder) to get seconds
+            seconds = total_seconds % 60
+            output_string = "Timer: {0:02}:{1:02}".format(minutes, seconds)
+
+            # Blit to the screen
+            text = font.render(output_string, 1, (white))
+
+            #place the timer
+            update()
+            screen.blit(text, [10, 70])
+            frame_count = frame_count + 1
+            # Limit to 20 frames per second
+            clock.tick(frame_rate)
+      
+            # Update the screen
+            pygame.display.flip()
+
 #Update function
 def update():
+    pygame.display.set_mode(size)
+    screen.fill(white)
     screen.blit(bg, background_position)
     screen.blit(cfont.render("Treasure:", 1, white),[10,40]) #Treasure text
     screen.blit(cfont.render("Score:", 1, white),[10,10]) #Score text
-    screen.blit(cfont.render("Timer:", 1, white),[10,70]) #Timer text
     R1.rob_update()
-    
     for r in Robot.tR:
         screen.blit(r[0], r[1])
     for c in Treasure1.tC:
@@ -129,10 +239,14 @@ def update():
         screen.blit(b[0], b[1])
     for a in Treasure3.tC3:
         screen.blit(a[0], a[1])
-
+        
     pygame.display.flip()
 
 #Instances
+TW=Tbox()
+TW.ask(pygame.display.set_mode((1000,100)))
+TW.display_box(pygame.display.set_mode((1000,100)),"")
+TW.SD()
 R1 = Robot(100,100)
 R1.create()
 update()
@@ -164,18 +278,25 @@ while True:
                     collidedWith = s
                     
         elif event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_1 and count > 0:
-                    (mouseX,mouseY) = pygame.mouse.get_pos()
-                    Treasure1(mouseX,mouseY).create()
-                    count = count - 1
-                    update()
-                if event.key == pygame.K_2 and count > 0:
-                    (mouseX,mouseY) = pygame.mouse.get_pos()
-                    Treasure2(mouseX,mouseY).create()
-                    count = count -1 
-                    update()
-                if event.key == pygame.K_3 and count > 0:
-                    (mouseX,mouseY) = pygame.mouse.get_pos()
-                    Treasure3(mouseX,mouseY).create()
-                    count = count - 1
-                    update()
+            if event.key == pygame.K_1 and count > 0:
+                (mouseX,mouseY) = pygame.mouse.get_pos()
+                Treasure1(mouseX,mouseY).create()
+                count = count - 1
+                update()
+            if event.key == pygame.K_2 and count > 0:
+                (mouseX,mouseY) = pygame.mouse.get_pos()
+                Treasure2(mouseX,mouseY).create()
+                count = count -1
+                screen.blit(robotx, (100,110))
+                update()
+            if event.key == pygame.K_3 and count > 0:
+                (mouseX,mouseY) = pygame.mouse.get_pos()
+                Treasure3(mouseX,mouseY).create()
+                count = count - 1
+                update()
+            if event.key == pygame.K_SPACE:
+                update()
+                timer()
+            if event.key == pygame.K_ESCAPE:    # pressing escape quit
+                  pygame.quit()
+                  sys.exit()
