@@ -1,6 +1,6 @@
 #Treasure Hunt - Part Two # A7 #
 #Importing Libraries 
-import pygame, random, sys, time, math, pygame.font, pygame.event, pygame.draw, string
+import pygame, random, sys, time, math, pygame.font, pygame.event, pygame.draw, time
 import sys
 
 #Initialise Pygame/canvas
@@ -14,6 +14,8 @@ cfont = pygame.font.SysFont("Calibri", 24) #Set Font
 
 white = (255,255,255) #Creating Colour white
 black = (0,0,0) #Creating colour black
+
+
 
 #Creating Class for the Robot
 class Robot:
@@ -117,8 +119,14 @@ robots = [R1]
 update()#Initial update of screen
 
 count = 5 # Limit the treasures placed
+clock = pygame.time.Clock()
+
+coordinates = []
+    
 #While the program is running
 while True:
+    clock.tick(30)
+    
     for event in pygame.event.get():
         if event.type == pygame.QUIT: #Ends the program when quit
             pygame.quit()
@@ -145,24 +153,36 @@ while True:
             if event.key == pygame.K_1 and count > 0: # When 1 is clicked, it will create an instance of treasure type 1 at mouse location
                 (mouseX,mouseY) = pygame.mouse.get_pos()
                 Treasure1(mouseX,mouseY).create()
+                coordinates.append(pygame.mouse.get_pos())
+                print coordinates
                 count = count - 1
                 update2()
                 
             if event.key == pygame.K_2 and count > 0: # When 2 is clicked, it will create an instance of treasure type 2 at mouse location
                 (mouseX,mouseY) = pygame.mouse.get_pos()
                 Treasure2(mouseX,mouseY).create()
+                coordinates.append(pygame.mouse.get_pos())
+                print coordinates
                 count = count -1
                 update2()
                 
             if event.key == pygame.K_3 and count > 0: # When 3 i clicked, it will create an instance of treasure type 3 at mouse location
                 (mouseX,mouseY) = pygame.mouse.get_pos()
                 Treasure3(mouseX,mouseY).create()
+                coordinates.append(pygame.mouse.get_pos())
+                print coordinates
                 count = count - 1
                 update2()
 
             if event.key == pygame.K_SPACE: # When space is clicked the program will start to collect treasures
-                for i in range(1,5):
+                for i in range(1,20):
                     R1.move(0,10)
+                    time.sleep(0.1)
                     update()
                     update2()
+
+            if event.key == pygame.K_ESCAPE: # When escape is clicked the program will stop
+                pygame.quit()
+                sys.exit()
+                
                 
