@@ -1,55 +1,46 @@
 #Treasure Hunt - Part Two # A7 #
 #Importing Libraries 
-import pygame, random, sys, time, math, pygame.font, pygame.event, pygame.draw, string
+import pygame, random, sys, time, math, pygame.font, pygame.event, pygame.draw, time, threading
 import sys
-
-#Creating colours
-white = (255,255,255)
-black    = (   0,   0,   0)
-green    = (   0, 255,   0)
-red      = ( 255,   0,   0)
+from time import sleep
+from math import sqrt
 
 #Initialise Pygame/canvas
-pygame.init()
+pygame.init() #Initialise pygame
 pygame.display.set_caption('Treasure Hunt') # Set the Title of window
-size = [640,480]
-screen = pygame.display.set_mode(size) #Set the screen size
-screen.fill(white)# Set the screen to white
+screen = pygame.display.set_mode([640,480]) #Set the screen size
 
-#Import background
-bg = pygame.image.load("background.jpg").convert()
-background_position = [0,0]
+bg = pygame.image.load("background.jpg").convert() #Import background
+background_position = [0,0] # Setting the position of the background
+cfont = pygame.font.SysFont("Calibri", 24) #Set Font
 
-#Descripition Background position
-back1 = 150,480,200,200
-
-#Set Font
-cfont = pygame.font.SysFont("Calibri", 24)
-
+white = (255,255,255) #Creating Colour white
+black = (0,0,0) #Creating colour black
+a=int(raw_input("Input time in second format:  "))
+    
 #Creating Class for the Robot
+
 class Robot:
-    #Robot list
-    tR = []
-    #Initialise class
-    def __init__(self, x, y):
+    tR = [] #Robot list
+    def __init__(self, x, y): #Initialise class
         self.x = x
         self.y = y
         self.ri = "robot.png"
-    #Create function
-    def create(self):
+        
+    def create(self): #Create function
         self.rbti = pygame.image.load(self.ri)
         self.rect = self.rbti.get_rect()
         self.rect.x = self.x
         self.rect.y = self.y
         Robot.tR.append((self.rbti, self.rect))
-    #Function used to update screen
-    def rob_update(self):
+        
+    def rob_update(self): #Function used to update screen
         screen.blit(self.rbti, self.rect)
-    #Returns the position
-    def position(self):
+        
+    def position(self): #Returns the position
         return self.rect
-    #Move function
-    def move(self, x, y):
+    
+    def drag(self, x, y): #Drag and drop function
         self.old_loc = self.rect
         self.rect.x = x
         self.rect.y = y
@@ -57,246 +48,180 @@ class Robot:
             if Robot.tR[i][1] == self.old_loc:
                 Robot.tR[i] = (self.rbti, self.rect)
 
-#Creating class for the treasure
-
-class Treasure:
-    def __init__(self, x, y):
-        self.x= x
-        self.y= y
-#Sub classes of Treasure
-class Treasure1(Treasure):
-    tC = []
-    def __init__(self, x, y):
-        Treasure.__init__(self, x, y)
+    def checkmove(self,x,y):
+        return self.rect.move(x,y)
+    
+    def move (self,x,y): # Move function
+      self.rect = self.rect.move(x,y)
+      self.rob_update()
+                        
+class placement:                                   
+    def __init__(self, x, y, img):
         self.x = x
         self.y = y
-        self.ci = "treasure.png"
-    def create(self):
-        self.cri = pygame.image.load(self.ci)
-        self.rect = self.cri.get_rect()
-        self.rect.x = self.x
-        self.rect.y = self.y
-        Treasure1.tC.append((self.cri, self.rect))
-    def update(self):
-        screen.blit(self.cri, self.rect)
+        self.img = img
 
-class Treasure2(Treasure):
-    tC2 = []
-    def __init__(self, x, y):
-        Treasure.__init__(self, x, y)
-        self.x = x
-        self.y = y
-        self.bi = "treasure2.png"
-    def create(self):
-        self.bri = pygame.image.load(self.bi)
-        self.rect = self.bri.get_rect()
-        self.rect.x = self.x
-        self.rect.y = self.y
-        Treasure2.tC2.append((self.bri, self.rect))
-    def update(self):
-        screen.blit(self.bri, self.rect)
+    def create(self):                   
+        self.spawn_img = pygame.image.load(self.img)
+        self.rect = self.spawn_img.get_rect()
 
-class Treasure3(Treasure):
-    tC3 = []
-    def __init__(self, x, y):
-        Treasure.__init__(self, x, y)
-        self.x = x
-        self.y = y
-        self.bi2 = "treasure3.png"
-    def create(self):
-        self.bri2 = pygame.image.load(self.bi2)
-        self.rect = self.bri2.get_rect()
-        self.rect.x = self.x
-        self.rect.y = self.y
-        Treasure3.tC3.append((self.bri2, self.rect))
-    def update(self):
-        screen.blit(self.bri2, self.rect)
-
-
-class Tbox:
-    def get_key(self):
-        while True:
-            for event in pygame.event.get():
-                if event.type == pygame.QUIT:
-                    self.quit=pygame.quit()
-                    self.sys=sys.exit()
-                elif event.type == pygame.KEYDOWN:
-                    if event.key == pygame.K_ESCAPE:# pressing escape quit
-                        self.quit=pygame.quit()
-                        self.sys=sys.exit()
-                    return event.key
-                else:
-                    pass
-    def display_box(self,screen, message):
-        self.screen = pygame.display.set_mode((1000,100))
-        self.m = message
-        self.fontobject = pygame.font.Font(None,48)
-        "Print a message in a box in the middle of the screen"
-
-        pygame.draw.rect(self.screen, (white),(0,0,1000,100), 0)
-        #the out line of the box
-        pygame.draw.rect(self.screen, (black),(48,18,900,60), 1)
-        if len(self.m) != 0:
-            screen.blit(self.fontobject.render(self.m, 1, (black)),(50, 30))
-        pygame.display.flip()
-
-    def ask(self,screen):
-        self.screen = pygame.display.set_mode((1000,100))
-        self.q = "Set the timer (seconds): "
-        "ask(screen, question) -> answer"
-        pygame.font.init()
-        self.current_integer = []
-        Tbox.display_box(self,screen, self.q  + string.join(self.current_integer))
-        while 1:
-            inkey = Tbox.get_key(self)
-            if inkey == pygame.K_BACKSPACE:
-                self.current_integer = self.current_integer[0:-1]
-            elif inkey == pygame.K_RETURN:
-                a = int(string.join(self.current_integer,""))
-                print a
-                break
-                
-            elif inkey == pygame.K_MINUS:
-                self.current_integer.append("_")
-            elif inkey <= 127:
-                self.current_integer.append(chr(inkey))
-            Tbox.display_box(self,screen, self.q  + string.join(self.current_integer))
-        return string.join(self.current_integer,"")
-    def SD(self):
-        self.a = int(string.join(self.current_integer,""))
-        print self.a
-        return self.a
-
-robotx = pygame.image.load("robot.png").convert()
-def timer():
-      Tbox()
-      size = [640,480]
-      screen = pygame.display.set_mode(size)
-      pygame.display.set_caption("Treasure Hunt")
-      bg = pygame.image.load("background.jpg").convert()
-      bg_position = [0,0]
-      clock = pygame.time.Clock()
-      font = pygame.font.Font(None, 24)
-      frame_count = 0
-      frame_rate = 600
-      s_time = int(TW.SD())
-      done =False
-
-      while not done:
-            for event in pygame.event.get(): # User did something
-                  if event.type == pygame.QUIT: # If user clicked close
-                        done = True # Flag that we are done so we exit this loop
-                        pygame.quit()
-                        sys.exit()
-                  elif event.type == pygame.KEYDOWN:
-                        if event.key == pygame.K_ESCAPE:           # pressing escape quit
-                              pygame.quit()
-                              sys.exit()
-                        return
+class Treasure(placement):              
+    tL = []                                               
+    def __init__(self, x, y, lvl):                         
         
+        self.lvl = lvl                                      
+        self.imgdict = {"treasure1": "treasure.png","treasure2": "treasure2.png", "treasure3"  : "treasure3.png"}
+        self.img = self.imgdict[lvl]                        
+        placement.__init__(self, x, y, self.img)        
+             
+    def spawn(self):
+        self.create()                   
+        self.rect.x = self.x                                         
+        self.rect.y = self.y                                            
+        Treasure.tL.append((self.spawn_img, self.rect, self.lvl))
+
+    def delete(self):                                                  
+        for i in range(len(Treasure.tl)):
+            if Treasure.tL[i][1] == self.rect:                    
+                Treasure.tL.remove(i)
+
+class mover:
+    def __init__(self,start,end):
+        self.start = start
+        self.end = end
+        self.treasurefinder  = []     
+        self.movement  = {"right": (15, 0),"left" : (-15, 0),"up"   : (0, -15),"down" : (0, 15)}
+    def search(self,rob):
+        search1 = []
+        for mv in self.movement:
+            search1.append((self.movement[mv][0],self.movement[mv][1]))
+        self.av = search1
+        
+        for coords in self.av:                                      
+            self.tmpMove = rob.checkmove(coords[0], coords[1])
+            self.startx  = self.tmpMove.x                        
+            self.starty  = self.tmpMove.y
+            self.pyth = math.hypot(self.end.x-self.startx,self.end.y-self.starty)
+            self.treasurefinder.append((self.movement.keys()[self.movement.values().index(coords)], self.pyth))   
+        self.kk = []
+        
+        for vals in self.treasurefinder:
+            self.kk.append(vals[1])
+        self.closesearch = min(self.kk)  			 
+        self.movementVar = [x for x in self.treasurefinder if x[1] == self.closesearch]
+        return self.movement[self.movementVar[0][0]]
+
+class CountDownTimer(threading.Thread):			#inherit from our simple Timer which initializes all that we need
+    global Mscreen
+    def __init__(self, seconds):			#make it possible to pass the time in seconds that we want the timer to run
+            self.runTime = seconds			#set our runTime in seconds
+            threading.Thread.__init__(self)	#call the Thread's constructor
+
+    def run(self):					#setup our new action, overriding the simple action in Timer
+        self.font=cfont
+        counter = self.runTime			#inititialize a counter variable
+        #Mscreen.fill(white)
+        for sec in range(self.runTime):	#start a loop over a range that is self.runTime elements long
             screen.fill(white)
-            # Calculate total seconds
-            total_seconds = s_time - (frame_count // frame_rate)
-            if total_seconds < 0:
-                  total_seconds = 0
-                  pygame.quit ()
-                  sys.exit()
-                  break
-                
-            # Divide by 60 to get total minutes
-            minutes = total_seconds // 60
-     
-            # Use modulus (remainder) to get seconds
-            seconds = total_seconds % 60
-            output_string = "Timer: {0:02}:{1:02}".format(minutes, seconds)
-
-            # Blit to the screen
-            text = font.render(output_string, 1, (white))
-
-            #place the timer
-            update()
+            time.sleep(1)			# ZZZZzzzz... (sleep for one second)
+            counter -= 1			#decrement our counter variable by 1
+            output_string = "Time left: {}".format(counter)
+            text = self.font.render(output_string, True, white)
             screen.blit(text, [10, 70])
-            frame_count = frame_count + 1
-            # Limit to 20 frames per second
-            clock.tick(frame_rate)
-      
-            # Update the screen
-            pygame.display.flip()
-
+            pygame.display.update()
+            
+            
 #Update function
-def update():
-    pygame.display.set_mode(size)
-    screen.fill(white)
-    screen.blit(bg, background_position)
-    screen.blit(cfont.render("Treasure:", 1, white),[10,40]) #Treasure text
+def update(): #Background updates
+    screen.blit(bg, background_position) #Updating background
+    pygame.font.SysFont("Calibri", 24) # Setting the font  
     screen.blit(cfont.render("Score:", 1, white),[10,10]) #Score text
-    R1.rob_update()
-    for r in Robot.tR:
-        screen.blit(r[0], r[1])
-    for c in Treasure1.tC:
+    screen.blit(cfont.render("Timer:", 1, white), [10,40]) #Timer text
+    R1.rob_update() #Blitting the robot to screen
+    pygame.display.flip()
+    
+
+def update2():  #Treasure Update
+    for c in Treasure.tL: #Treasure updates
         screen.blit(c[0], c[1])
-    for b in Treasure2.tC2:
-        screen.blit(b[0], b[1])
-    for a in Treasure3.tC3:
-        screen.blit(a[0], a[1])
-        
     pygame.display.flip()
 
-#Instances
-TW=Tbox()
-TW.ask(pygame.display.set_mode((1000,100)))
-TW.display_box(pygame.display.set_mode((1000,100)),"")
-TW.SD()
-R1 = Robot(100,100)
-R1.create()
-update()
-move = False
-robots = [R1]
-count = 5
+def robstart(a):
+    a = mover(R1,a)
+    movement = a.search(R1)
+    R1.move(movement[0],movement[1])
+    sleep(0.1)
+    update()
+    update2()
 
-#While Loop
+def work():
+    global closest
+    closest = Treasure.tL[0][1]
+    
+#Instance of Robot
+R1=Robot(100,100) #Create robot
+R1.create()
+robots = [R1]
+update()#Initial update of screen
+
+count = 5 # Limit the treasures placed
+clock = pygame.time.Clock()
+c = CountDownTimer(a)
+
+
+#While the program is running
 while True:
     for event in pygame.event.get():
-        if event.type == pygame.QUIT:
+        if event.type == pygame.QUIT: #Ends the program when quit
             pygame.quit()
             sys.exit()
 
-        elif event.type == pygame.MOUSEBUTTONUP and move:
+        elif event.type == pygame.MOUSEBUTTONUP and drag: #Determines the location of the robot when clicked and dragged
             (mouseX, mouseY) = pygame.mouse.get_pos()
             for i in range(len(robots)):
                 if robots[i].position() == collidedWith[1]:
-                    robots[i].move(mouseX, mouseY)
+                    robots[i].drag(mouseX, mouseY)
             update()
-            move = False
+            update2()
+            drag = False
             s = None
             
-        elif event.type == pygame.MOUSEBUTTONDOWN:
+        elif event.type == pygame.MOUSEBUTTONDOWN: #Places the image of the robot at the mouse position
             pos = pygame.mouse.get_pos()
+            drag = False
             for s in Robot.tR:
                 if s[1].collidepoint(pos):
-                    move = True
+                    drag = True
                     collidedWith = s
                     
         elif event.type == pygame.KEYDOWN:
-            if event.key == pygame.K_1 and count > 0:
+            if event.key == pygame.K_1 and count > 0: # When 1 is clicked, it will create an instance of treasure type 1 at mouse location
                 (mouseX,mouseY) = pygame.mouse.get_pos()
-                Treasure1(mouseX,mouseY).create()
-                count = count - 1
-                update()
-            if event.key == pygame.K_2 and count > 0:
+                Treasure(mouseX,mouseY,"treasure1").spawn()
+                count -= 1
+                update2()
+                
+            if event.key == pygame.K_2 and count > 0: # When 2 is clicked, it will create an instance of treasure type 2 at mouse location
                 (mouseX,mouseY) = pygame.mouse.get_pos()
-                Treasure2(mouseX,mouseY).create()
-                count = count -1
-                screen.blit(robotx, (100,110))
-                update()
-            if event.key == pygame.K_3 and count > 0:
+                Treasure(mouseX,mouseY,"treasure2").spawn()
+                count -= 1
+                update2()
+                
+            if event.key == pygame.K_3 and count > 0: # When 3 is clicked, it will create an instance of treasure type 3 at mouse location
                 (mouseX,mouseY) = pygame.mouse.get_pos()
-                Treasure3(mouseX,mouseY).create()
-                count = count - 1
-                update()
-            if event.key == pygame.K_SPACE:
-                update()
-                timer()
-            if event.key == pygame.K_ESCAPE:    # pressing escape quit
-                  pygame.quit()
-                  sys.exit()
+                Treasure(mouseX,mouseY,"treasure3").spawn()
+                count -= 1
+                update2()
+              
+            if event.key == pygame.K_SPACE: # When space is clicked the program will start to collect treasures
+                x=5
+
+                while x==5:
+                    work()
+                    robstart(closest)
+                    if R1.checkmove(1,1).colliderect(closest):
+                        Treasure.tL.pop(0)
+                    
+            if event.key == pygame.K_ESCAPE: # When escape is clicked the program will stop
+                pygame.quit()
+                sys.exit()                
