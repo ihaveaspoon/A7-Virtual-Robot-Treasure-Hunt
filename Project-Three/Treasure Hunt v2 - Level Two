@@ -15,6 +15,14 @@ cfont = pygame.font.SysFont("Calibri", 24) #Set Font
 
 white = (255,255,255) #Creating Colour white
 black = (0,0,0) #Creating colour black
+
+#Instruction for the user
+print "Keys 1/2/3 will spawn treasures at the mouse location"
+print "The robot character can be moved by clicking and dragging to the desired"
+print "Press space to make the robot move after treasures have been placed"
+print "The program will start after the time has been input"
+print "\t"
+
 a=int(raw_input("Input time in seconds:  "))#User input for timer
 
 #Creating Class for the Robot
@@ -43,7 +51,7 @@ class Robot:
         self.old_loc = self.rect
         self.rect.x = x
         self.rect.y = y
-        for i in range(len(Robot.tR)):
+        for i in range(len(Robot.tR)): #Updates the list of the location when moved
             if Robot.tR[i][1] == self.old_loc:
                 Robot.tR[i] = (self.rbti, self.rect)
 
@@ -73,14 +81,14 @@ class Placement:
         self.img = img
 
     def create(self):                   
-        self.spawn_img = pygame.image.load(self.img)
+        self.spawn_img = pygame.image.load(self.img) #Attributes for the treasure class
         self.rect = self.spawn_img.get_rect()
 
 class Treasure(Placement):    #Treasure is a sub class of placement          
     tL = []
     def __init__(self, x, y, place):     #Inherits attributes from placement                    
         self.place = place                                      
-        self.imgdict = {"treasure1": "treasure.png","treasure2": "treasure2.png", "treasure3"  : "treasure3.png"}
+        self.imgdict = {"treasure1": "treasure.png","treasure2": "treasure2.png", "treasure3"  : "treasure3.png"} #Dictionary for images
         self.img = self.imgdict[place]                        
         Placement.__init__(self, x, y, self.img)        
              
@@ -113,7 +121,7 @@ class calcdistance:
         for vals in self.treasurefinder:
             self.finds.append(vals[1])
         self.closesearch = min(self.finds)               
-        self.movementVar = [x for x in self.treasurefinder if x[1] == self.closesearch]
+        self.movementVar = [x for x in self.treasurefinder if x[1] == self.closesearch] #Finds the treasure closest to the robot
         return self.movement[self.movementVar[0][0]]
 
 class CountDownTimer(threading.Thread):     #Inherit from our simple Timer which initializes all that we need
@@ -135,8 +143,7 @@ class CountDownTimer(threading.Thread):     #Inherit from our simple Timer which
             screen.blit(text, [10, 10])
             pygame.display.flip()
 
-c = CountDownTimer(a)
-
+c = CountDownTimer(a) #Initialise the timer
 
 #Standalone functions
 def update(): #Background updates
@@ -145,12 +152,9 @@ def update(): #Background updates
     screen.blit(cfont.render("Timer:", 1, white), [10,10])#Timer text
     screen.blit(cfont.render("WishList: Coin, Chest, Jewel", 1, white), [10,40])#Timer text
     R1.rob_update() #Blitting the robot to screen
-    
     for c in Treasure.tL: #Treasure updates
         screen.blit(c[0], c[1])
-
     pygame.display.flip()
-
 
 def bubbleSort(thelist): #Bubble sort
     for passnum in range(len(thelist)-1,0,-1):
@@ -160,13 +164,11 @@ def bubbleSort(thelist): #Bubble sort
                 thelist[i] = thelist[i+1]
                 thelist[i+1] = temp
 
-
-
 #Instance of Robot
 R1=Robot(100,100) #Create robot
 R1.create()
-
 robots = [R1]
+
 update()#Initial update of screen
 
 count = 5 # Limit the treasures placed
@@ -229,21 +231,15 @@ while True:
                        Treasure.tL.pop(0) #Deletes the treasure once detected
                        update()
 
-                print "Unsorted list of treasures collected: ",thelist
+                print "Unsorted list of treasures collected: ",thelist #Displaying the unsorted list
                 unsorted =  str(thelist)
-                #screen.blit(cfont.render(str(unsorted), 1, white), [30,30])
-
                 bubbleSort(thelist)
-                print ("Bubble sorted list (Ascending): ", thelist)
+                print ("Bubble sorted list (Ascending): ", thelist) #Displays the sorted ascending list
                 asc = str(thelist)
-                #screen.blit(cfont.render(str(asc),1,white), [30,50])
-                                                                        
                 thelist.reverse()
-                print ("Bubble sorted list (Descending): ", thelist)
+                print ("Bubble sorted list (Descending): ", thelist) #Displays the sorted descending list
                 desc = str(thelist)
-                #screen.blit(cfont.render(str(desc), 1, white), [30,70])
-
-                print "Score:",sum(int(i) for i in thelist)
+                print "Score:",sum(int(i) for i in thelist) #Displays the score for the user
 
             if event.key == pygame.K_ESCAPE: # When escape is clicked the program will stop
                 pygame.quit()
